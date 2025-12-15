@@ -391,6 +391,7 @@
             const score = Math.round((p1 + p2 + p3 + p4) * 100) / 100;
             
             // Xây dựng chuỗi thông báo tổng điểm
+            const appTitle = document.getElementById('appTitle').innerText;
             const scoreSummary = [
                 `${score} / 10`,
                 `TN: ${p1}/3.0`,
@@ -404,7 +405,7 @@
 
             // Payload gửi đi
             const payload = {
-                role: document.getElementById('appTitle').innerText, // Gửi tiêu đề ứng dụng
+                role: appTitle, // Gửi tiêu đề ứng dụng
                 evaluator: studentName,
                 groupName: groupName,
                 week: "DE_MOI_CTST",
