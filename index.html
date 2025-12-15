@@ -35,7 +35,7 @@
     <div class="max-w-5xl mx-auto p-4">
         <!-- Header -->
         <header class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white p-6 rounded-t-lg shadow-lg mb-6">
-            <h1 class="text-2xl md:text-3xl font-bold text-center uppercase">Hệ Thống Ôn Tập Toán 10 HK1</h1>
+            <h1 class="text-2xl md:text-3xl font-bold text-center uppercase" id="appTitle">Hệ Thống Ôn Tập Toán 10 HK1</h1>
             <p class="text-center mt-2 text-blue-100 italic">Chương trình Chân Trời Sáng Tạo - Năm học 2025-2026</p>
         </header>
 
@@ -449,12 +449,22 @@
 
             const score = Math.round((p1 + p2 + p3 + p4) * 100) / 100;
 
+            // Lấy tiêu đề ứng dụng
+            const appTitle = document.title;
+
             const payload = {
-                role: "HocSinh",
+                role: appTitle, // Gửi tiêu đề ứng dụng vào cột Role (Cột B)
                 evaluator: studentName,
                 groupName: groupName,
                 week: currentExamKey.toUpperCase(), // DE1 or DE2
-                scores: [p1, p2, p3, p4, score]
+                scores: [
+                    p1, 
+                    p2, 
+                    p3, 
+                    p4, 
+                    score,
+                    `Tổng: ${score}/10` // Thêm chuỗi thông báo tổng điểm vào cuối mảng điểm
+                ]
             };
 
             // Send to Google Sheet
