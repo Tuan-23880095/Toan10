@@ -347,7 +347,7 @@
                 let ansStr = "X";
                 if (selected) {
                     const val = parseInt(selected.value);
-                    ansStr = String.fromCharCode(65 + val); // Chuyển 0->A, 1->B...
+                    ansStr = (val === item.ans) ? "Đ" : "S"; // Ghi nhận Đ/S thay vì A/B/C/D
                     if (val === item.ans) p1 += 0.25;
                 }
                 answerLog.push(ansStr);
@@ -360,8 +360,10 @@
                     const selected = document.querySelector(`input[name="tf_${idx}_${i}"]:checked`);
                     if (selected) {
                         const val = selected.value === "true";
-                        if (val === item.ans[i]) p2 += 0.25;
-                        questionResult.push(String.fromCharCode(97+i) + ":" + (val ? "Đ" : "S"));
+                        const isCorrect = (val === item.ans[i]);
+                        if (isCorrect) p2 += 0.25;
+                        // Ghi nhận Đ (nếu làm đúng) hoặc S (nếu làm sai) cho từng ý
+                        questionResult.push(String.fromCharCode(97+i) + ":" + (isCorrect ? "Đ" : "S"));
                     } else {
                         questionResult.push(String.fromCharCode(97+i) + ":X");
                     }
