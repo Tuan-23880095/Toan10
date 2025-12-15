@@ -3,79 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ôn Tập Toán 10 HK1 - Tổng Hợp</title>
+    <title>Đề Ôn Tập Toán 10 HK1 - CTST</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-        body { font-family: 'Roboto', sans-serif; background-color: #f3f4f6; }
+        body { font-family: 'Roboto', sans-serif; background-color: #f0fdf4; }
         
         /* Styles cho Kéo Thả */
         .drag-source { cursor: pointer; transition: all 0.2s; user-select: none; }
-        .drag-source.selected { transform: scale(1.05); box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-weight: bold; }
-        .drop-target { border: 2px dashed #9ca3af; min-width: 80px; display: inline-block; padding: 2px 8px; border-radius: 4px; background: white; cursor: pointer; color: #374151; font-weight: bold; margin: 0 4px;}
-        .drop-target.filled { border-style: solid; background-color: #eff6ff; }
+        .drag-source.selected { transform: scale(1.05); box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-weight: bold; background-color: #166534 !important; color: white !important; }
+        .drop-target { border: 2px dashed #86efac; min-width: 100px; display: inline-block; padding: 2px 8px; border-radius: 4px; background: white; cursor: pointer; color: #14532d; font-weight: bold; margin: 0 4px; vertical-align: middle;}
+        .drop-target.filled { border-style: solid; background-color: #dcfce7; border-color: #166534; }
 
         /* Loading */
         .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 50; }
-        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #2563eb; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #16a34a; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* Tab Active State */
-        .tab-btn.active { background-color: #2563eb; color: white; border-color: #2563eb; }
-        .tab-btn.inactive { background-color: white; color: #374151; border-color: #d1d5db; }
     </style>
 </head>
 <body>
 
-    <!-- Loading -->
+    <!-- Loading Screen -->
     <div id="loading" class="loading-overlay">
         <div class="spinner"></div>
     </div>
 
     <div class="max-w-5xl mx-auto p-4">
         <!-- Header -->
-        <header class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white p-6 rounded-t-lg shadow-lg mb-6">
-            <h1 class="text-2xl md:text-3xl font-bold text-center uppercase" id="appTitle">Hệ Thống Ôn Tập Toán 10 HK1</h1>
-            <p class="text-center mt-2 text-blue-100 italic">Chương trình Chân Trời Sáng Tạo - Năm học 2025-2026</p>
+        <header class="bg-gradient-to-r from-green-700 to-emerald-800 text-white p-6 rounded-t-lg shadow-lg mb-6">
+            <h1 class="text-2xl md:text-3xl font-bold text-center uppercase" id="appTitle">Ôn Tập Toán 10 Cuối Kỳ 1</h1>
+            <p class="text-center mt-2 text-green-100 italic">Biên soạn theo chương trình Chân Trời Sáng Tạo</p>
         </header>
 
         <!-- Student Info -->
-        <div class="bg-white p-6 rounded-lg shadow-md mb-6 border-l-4 border-blue-600">
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6 border-l-4 border-green-600">
             <h2 class="text-lg font-bold mb-4 text-gray-800 flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                 Thông tin thí sinh
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2">Họ và tên</label>
-                    <input type="text" id="studentName" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập họ tên...">
+                    <input type="text" id="studentName" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Nhập họ tên...">
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2">Lớp</label>
-                    <input type="text" id="groupName" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ví dụ: 10A1">
+                    <input type="text" id="groupName" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Ví dụ: 10A1">
                 </div>
             </div>
         </div>
 
-        <!-- Exam Selector Tabs -->
-        <div class="flex justify-center space-x-4 mb-6">
-            <button onclick="switchExam('de1')" id="btn-de1" class="tab-btn active px-6 py-3 rounded-full font-bold border-2 transition duration-300 shadow-sm focus:outline-none">
-                ĐỀ SỐ 01 (Cơ bản & Thực tế)
-            </button>
-            <button onclick="switchExam('de2')" id="btn-de2" class="tab-btn inactive px-6 py-3 rounded-full font-bold border-2 transition duration-300 shadow-sm focus:outline-none">
-                ĐỀ SỐ 02 (Mở rộng & Nâng cao)
-            </button>
-        </div>
-
         <!-- Main Form -->
-        <form id="quizForm" class="space-y-6">
-            <div id="exam-content">
-                <!-- Content will be injected by JS -->
+        <form id="quizForm" class="space-y-8">
+            
+            <!-- PHẦN 1: TRẮC NGHIỆM -->
+            <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-blue-500">
+                <h2 class="text-xl font-bold mb-4 text-blue-700">PHẦN I: TRẮC NGHIỆM (12 Câu - 3.0 điểm)</h2>
+                <div id="mcq-container" class="space-y-6">
+                    <!-- JS will render MCQs here -->
+                </div>
             </div>
 
-            <!-- Submit -->
+            <!-- PHẦN 2: ĐÚNG SAI -->
+            <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-orange-500">
+                <h2 class="text-xl font-bold mb-4 text-orange-700">PHẦN II: ĐÚNG / SAI (4 Câu - 4.0 điểm)</h2>
+                <div id="tf-container" class="space-y-8">
+                    <!-- JS will render TF here -->
+                </div>
+            </div>
+
+            <!-- PHẦN 3: ĐIỀN KHUYẾT (KÉO THẢ) -->
+            <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                <h2 class="text-xl font-bold mb-4 text-purple-700">PHẦN III: ĐIỀN KHUYẾT (5 Câu - 1.0 điểm)</h2>
+                <p class="text-sm text-gray-600 mb-2 italic">Click chọn từ khóa rồi click vào ô trống để điền.</p>
+                
+                <div class="bg-purple-50 p-4 rounded-lg mb-6 sticky top-2 z-10 shadow-sm border border-purple-200">
+                    <h3 class="font-bold text-purple-800 mb-2 text-sm uppercase">Ngân hàng từ khóa:</h3>
+                    <div id="word-bank" class="flex flex-wrap gap-2">
+                        <!-- JS renders words here -->
+                    </div>
+                </div>
+                <div id="fill-container" class="space-y-4">
+                    <!-- JS renders fill questions here -->
+                </div>
+            </div>
+
+            <!-- PHẦN 4: TRẢ LỜI NGẮN -->
+            <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-red-500">
+                <h2 class="text-xl font-bold mb-4 text-red-700">PHẦN IV: TRẢ LỜI NGẮN (5 Câu - 2.0 điểm)</h2>
+                <div id="sa-container" class="space-y-6">
+                    <!-- JS renders SA questions here -->
+                </div>
+            </div>
+
+            <!-- Submit Button -->
             <div class="text-center pb-12 pt-6">
-                <button type="button" onclick="submitExam()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-10 rounded-full shadow-lg transform transition hover:scale-105 text-lg flex items-center justify-center mx-auto">
+                <button type="button" onclick="submitExam()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-12 rounded-full shadow-lg transform transition hover:scale-105 text-xl flex items-center justify-center mx-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     NỘP BÀI & XEM ĐIỂM
                 </button>
@@ -95,380 +118,301 @@
                 
                 <div class="bg-gray-50 p-4 rounded-lg text-left space-y-2 border border-gray-200">
                     <p class="flex justify-between"><span>Thí sinh:</span> <span id="resName" class="font-medium"></span></p>
-                    <p class="flex justify-between"><span>Đề thi:</span> <span id="resExam" class="font-medium text-blue-600"></span></p>
                     <div class="border-t border-gray-300 my-2"></div>
                     <p class="flex justify-between text-lg"><strong>Tổng điểm:</strong> <span id="resTotal" class="text-red-600 font-bold"></span></p>
                     <div class="grid grid-cols-2 gap-2 text-sm mt-2">
-                        <div class="bg-white p-2 rounded border">TN: <span id="resP1" class="font-bold"></span></div>
-                        <div class="bg-white p-2 rounded border">Đ/S: <span id="resP2" class="font-bold"></span></div>
-                        <div class="bg-white p-2 rounded border">Điền: <span id="resP3" class="font-bold"></span></div>
-                        <div class="bg-white p-2 rounded border">Ngắn: <span id="resP4" class="font-bold"></span></div>
+                        <div class="bg-white p-2 rounded border border-blue-200">TN: <span id="resP1" class="font-bold text-blue-600"></span></div>
+                        <div class="bg-white p-2 rounded border border-orange-200">Đ/S: <span id="resP2" class="font-bold text-orange-600"></span></div>
+                        <div class="bg-white p-2 rounded border border-purple-200">Điền: <span id="resP3" class="font-bold text-purple-600"></span></div>
+                        <div class="bg-white p-2 rounded border border-red-200">Ngắn: <span id="resP4" class="font-bold text-red-600"></span></div>
                     </div>
                 </div>
                 
                 <div class="mt-6">
-                    <button onclick="closeModal()" class="w-full rounded-lg border border-transparent shadow-sm px-4 py-3 bg-blue-600 text-white font-medium hover:bg-blue-700 transition">Đóng & Xem lại bài</button>
+                    <button onclick="closeModal()" class="w-full rounded-lg border border-transparent shadow-sm px-4 py-3 bg-green-600 text-white font-medium hover:bg-green-700 transition">Đóng & Xem lại bài</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- CẤU HÌNH LIÊN KẾT GOOGLE SHEET ---
-        // Vui lòng dán URL App Script của bạn vào biến dưới đây
+        // --- CẤU HÌNH ---
+        // THAY URL BÊN DƯỚI BẰNG LINK APP SCRIPT CỦA BẠN
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKeTMSqe5fDYbjPS5JkhAaiHkwWYGDoOkCmvQXxp5LkInboOgZt4S7lXh_40D7VEl8wg/exec"; 
 
-        // --- DỮ LIỆU ĐỀ THI ---
-        const exams = {
-            "de1": {
-                name: "Đề số 01",
-                color: "blue",
-                mcq: [
-                    { q: "Cho tập hợp A = [-2; 5) và B = (0; +∞). Tập hợp A ∩ B là:", options: ["(0; 5)", "[-2; 0]", "(0; 5]", "[-2; +∞)"], ans: 0 },
-                    { q: "Miền nghiệm của bất phương trình x - 2y > 4 KHÔNG chứa điểm nào?", options: ["(5; 0)", "(0; -3)", "(1; -2)", "(6; 0)"], ans: 2 },
-                    { q: "Trục đối xứng của Parabol y = 2x² + 4x - 1 là:", options: ["x = 1", "x = -1", "x = 2", "x = -2"], ans: 1 },
-                    { q: "Cho α là góc tù. Khẳng định nào sau đây đúng?", options: ["sin α < 0", "cos α > 0", "tan α < 0", "cot α > 0"], ans: 2 },
-                    { q: "Cho tam giác đều ABC cạnh a. Tích vô hướng AB.AC bằng:", options: ["a²", "a²/2", "-a²/2", "a²√3"], ans: 1 },
-                    { q: "Điểm kiểm tra của 5 học sinh: 6, 8, 8, 9, 10. Phương sai của mẫu số liệu là:", options: ["1.36", "1.6", "2.0", "1.2"], ans: 0 },
-                    { q: "Tập xác định của hàm số y = √(2x - 6) là:", options: ["(3; +∞)", "[3; +∞)", "(-∞; 3]", "R \\ {3}"], ans: 1 },
-                    { q: "Cho u(2; -3) và v(1; 4). Tọa độ của u + v là:", options: ["(3; 1)", "(1; -7)", "(3; -1)", "(-1; 7)"], ans: 0 },
-                    { q: "Tam giác ABC có AC=4, AB=5, A=60°. Độ dài cạnh BC là:", options: ["√21", "√61", "3", "9"], ans: 0 },
-                    { q: "Số quy tròn của số 234567 đến hàng trăm là:", options: ["234500", "234600", "234000", "235000"], ans: 1 },
-                    { q: "Khẳng định nào sau đây SAI về vectơ?", options: ["Hai vectơ bằng nhau thì cùng hướng và cùng độ dài.", "Vectơ-không cùng phương với mọi vectơ.", "Hai vectơ cùng phương thì luôn cùng hướng.", "Độ dài của vectơ là khoảng cách giữa điểm đầu và điểm cuối."], ans: 2 },
-                    { q: "Hàm số y = -x² + 2x + 3 đồng biến trên khoảng:", options: ["(-∞; 1)", "(1; +∞)", "(-∞; 2)", "(-1; +∞)"], ans: 0 }
-                ],
-                tf: [
-                    { 
-                        q: "Bài toán sản xuất: A cần 2kg nguyên liệu, 30h máy; B cần 4kg nguyên liệu, 15h máy. Có 200kg nguyên liệu, 1200h máy.", 
-                        subs: ["Hệ BPT: 2x+4y ≤ 200; 30x+15y ≤ 1200; x,y ≥ 0", "Điểm (0; 50) thuộc miền nghiệm.", "Lợi nhuận cao nhất khi chỉ sản xuất B.", "Tổng lợi nhuận lớn nhất là 3 triệu đồng."],
-                        ans: [true, true, false, false]
-                    },
-                    {
-                        q: "Cho hàm số bậc hai y = x² - 4x + 3 có đồ thị (P).",
-                        subs: ["Đồ thị (P) cắt trục tung tại điểm có tung độ bằng 3.", "Đỉnh của (P) là I(2; -1).", "Min y trên [0; 3] là 0.", "Đường thẳng y = -2 cắt (P) tại 2 điểm."],
-                        ans: [true, true, false, false]
-                    },
-                    {
-                        q: "Cho tam giác ABC có A(1; 2), B(-3; 4), C(5; -2).",
-                        subs: ["Vectơ AB = (-4; 2).", "Trọng tâm G(1; 4/3).", "Tam giác ABC vuông tại A.", "Độ dài BC bằng 10."],
-                        ans: [true, true, true, true] 
-                    },
-                    {
-                        q: "Thống kê chiều cao 9 HS: 150, 152, 154, 155, 155, 160, 163, 165, 170.",
-                        subs: ["Số trung bình cộng là 158.2 cm.", "Mốt là 155.", "Tứ phân vị thứ nhất Q1 = 153.", "Khoảng tứ phân vị = 12."],
-                        ans: [true, true, false, true]
-                    }
-                ],
-                wordBank: ["Parabol", "180 độ", "vecto không", "cộng", "Định lý Sin", "elip", "trừ", "Định lý Cosin"],
-                fill: [
-                    { text: "Đồ thị hàm số bậc hai là một đường cong gọi là [].", ans: "Parabol" },
-                    { text: "Tổng ba góc trong một tam giác luôn bằng [].", ans: "180 độ" },
-                    { text: "Vectơ có điểm đầu và điểm cuối trùng nhau gọi là [].", ans: "vecto không" },
-                    { text: "Quy tắc hình bình hành dùng để tính tổng hai vectơ chung gốc là quy tắc [].", ans: "cộng" },
-                    { text: "Tỉ số giữa cạnh và sin góc đối bằng đường kính đường tròn ngoại tiếp là [].", ans: "Định lý Sin" }
-                ],
-                sa: [
-                    { q: "Độ lệch chuẩn của mẫu: 2, 4, 6, 8, 10 (Làm tròn 1 số thập phân).", ans: "2.8" },
-                    { q: "Lực F1=40N, F2=30N, góc 90°. Hợp lực là bao nhiêu N?", ans: "50" },
-                    { q: "Cổng Parabol cao 186m, rộng 162m. Tại điểm cách chân 10m cao bao nhiêu mét? (Làm tròn đơn vị).", ans: "43" },
-                    { q: "Tam giác ABC: a=5, c=8, B=60°. Diện tích là bao nhiêu? (Làm tròn 1 thập phân).", ans: "17.3" },
-                    { q: "Tìm biên dương m để x² - 2mx + 4 ≥ 0 với mọi x.", ans: "2" }
-                ]
-            },
-            "de2": {
-                name: "Đề số 02",
-                color: "rose", // Sử dụng màu hồng/đỏ
-                mcq: [
-                    { q: "Cho tập hợp A = {0; 1; 2; 3} và B = {3; 4; 5}. Tập hợp A \\ B là:", options: ["{3}", "{0; 1; 2}", "{4; 5}", "{0; 1; 2; 3; 4; 5}"], ans: 1 },
-                    { q: "Cặp số (1; -1) là nghiệm của bất phương trình nào sau đây?", options: ["x + y > 3", "x - y < 0", "2x + y < 4", "-x - y > 0"], ans: 2 },
-                    { q: "Tập xác định của hàm số y = (x+1)/(x-3) là:", options: ["R", "R \\ {3}", "(3; +∞)", "R \\ {-1}"], ans: 1 },
-                    { q: "Đỉnh của parabol y = -x² + 2x + 3 có tung độ bằng:", options: ["1", "3", "4", "2"], ans: 2 },
-                    { q: "Tam thức bậc hai f(x) = x² - 5x + 6 nhận giá trị âm khi:", options: ["x ∈ (2; 3)", "x ∈ (-∞; 2)", "x ∈ (3; +∞)", "x ∈ [2; 3]"], ans: 0 },
-                    { q: "Giá trị của cos(150°) bằng:", options: ["1/2", "-1/2", "√3/2", "-√3/2"], ans: 3 },
-                    { q: "Tam giác ABC có b=6, c=8, A=60°. Độ dài cạnh a là:", options: ["2√13", "√52", "2√37", "10"], ans: 0 },
-                    { q: "Cho hình bình hành ABCD. Khẳng định nào đúng?", options: ["vectơ AB + AD = AC", "vectơ AB - AD = AC", "vectơ AB + AC = AD", "vectơ CB + CD = CA"], ans: 0 },
-                    { q: "Cho hình vuông ABCD cạnh a. Tích vô hướng của vectơ AB và vectơ AD là:", options: ["a²", "0", "-a²", "a²√2"], ans: 1 },
-                    { q: "Số trung bình của mẫu số liệu: 2, 4, 6, 8, 10 là:", options: ["5", "6", "7", "8"], ans: 1 },
-                    { q: "Quy tròn số 12.4567 đến hàng phần trăm được:", options: ["12.45", "12.46", "12.4", "12.5"], ans: 1 },
-                    { q: "Cho a=(2; 5), b=(-1; 3). Tọa độ vectơ c = 2a - b là:", options: ["(5; 7)", "(3; 7)", "(5; 13)", "(3; 2)"], ans: 0 }
-                ],
-                tf: [
-                    { 
-                        q: "Bài toán dinh dưỡng: Cần ít nhất 900 Protein, 400 Lipit. Thực phẩm A (80 Pro, 20 Lip, 30k), B (60 Pro, 40 Lip, 20k).", 
-                        subs: ["Hàm mục tiêu chi phí F = 30x + 20y.", "Điều kiện Lipit: 20x + 40y ≤ 400.", "Điểm (5; 10) thỏa mãn điều kiện dinh dưỡng.", "Chi phí thấp nhất là 200 nghìn đồng."],
-                        ans: [true, false, true, false] 
-                    },
-                    {
-                        q: "Cho hàm số bậc hai y = x² - 4x + 3.",
-                        subs: ["Trục đối xứng là đường thẳng x = 2.", "Hàm số đồng biến trên khoảng (-∞; 2).", "Đồ thị cắt trục hoành tại 2 điểm phân biệt.", "Giá trị nhỏ nhất của hàm số là -1."],
-                        ans: [true, false, true, true]
-                    },
-                    {
-                        q: "Trong mặt phẳng Oxy, cho A(1; 1), B(4; 5), C(-2; 5).",
-                        subs: ["Tọa độ vectơ AB = (3; 4).", "Độ dài đoạn thẳng AB bằng 5.", "Tam giác ABC vuông cân tại A.", "Trọng tâm tam giác ABC có tọa độ (1; 11/3)."],
-                        ans: [true, true, false, true]
-                    },
-                    {
-                        q: "Điểm thi: 4, 5, 6, 6, 7, 7, 8, 9, 9, 10 (10 học sinh).",
-                        subs: ["Trung vị của mẫu số liệu là 7.", "Mẫu số liệu có 3 mốt là 6, 7 và 9.", "Tứ phân vị thứ nhất Q1 = 5.", "Khoảng biến thiên R = 6."],
-                        ans: [true, true, false, true]
-                    }
-                ],
-                wordBank: ["Trọng tâm", "Vectơ đối", "Độ lệch chuẩn", "Tù", "Định lý Cosin", "Trực tâm", "Định lý Sin", "Vuông"],
-                fill: [
-                    { text: "Điểm G là [] của tam giác ABC khi vectơ GA + GB + GC = 0.", ans: "Trọng tâm" },
-                    { text: "Tổng của hai [] luôn bằng vectơ-không.", ans: "Vectơ đối" },
-                    { text: "Số đặc trưng đo độ phân tán của mẫu số liệu, bằng căn bậc hai của phương sai là [].", ans: "Độ lệch chuẩn" },
-                    { text: "Trong tam giác, nếu góc A > 90 độ thì giá trị cosA luôn âm, góc A gọi là góc [].", ans: "Tù" },
-                    { text: "Công thức a² = b² + c² - 2bc.cosA là nội dung của [].", ans: "Định lý Cosin" }
-                ],
-                sa: [
-                    { q: "Tam giác ABC đều cạnh a=4. Độ dài vectơ AB + AC là bao nhiêu? (Làm tròn 1 số thập phân).", ans: "6.9" },
-                    { q: "Góc giữa hai vectơ a=(1; 0) và b=(-1; 1) là bao nhiêu độ?", ans: "135" },
-                    { q: "Cổng hầm hình Parabol rộng 12m, cao 8m. Tại điểm cách chân 2m, chiều cao là bao nhiêu mét? (Làm tròn 1 số thập phân).", ans: "4.4" },
-                    { q: "Mẫu số liệu: 1, 3, 5, 7, 9, 11, 13. Khoảng tứ phân vị là bao nhiêu?", ans: "8" },
-                    { q: "Hai lực F1=60N, F2=80N vuông góc nhau. Hợp lực có độ lớn bao nhiêu N?", ans: "100" }
-                ]
-            }
+        // --- DỮ LIỆU ĐỀ THI (Dựa trên PDF và yêu cầu) ---
+        const examData = {
+            mcq: [
+                { q: "Cho tập hợp A = {x ∈ N | x ≤ 5}. Tập hợp A là:", options: ["{1;2;3;4;5}", "{0;1;2;3;4;5;6}", "{0;1;2;3;4;5}", "{1;2;3;4;5;6}"], ans: 2 },
+                { q: "Tập xác định của hàm số y = √(x-2) là:", options: ["(2; +∞)", "[2; +∞)", "R \\ {2}", "(-∞; 2]"], ans: 1 },
+                { q: "Parabol y = x² - 4x + 3 có trục đối xứng là:", options: ["x = -2", "x = 4", "x = 2", "x = -4"], ans: 2 },
+                { q: "Cho tam giác ABC có AB=c, AC=b, BC=a. Định lý Cosin tại đỉnh A là:", options: ["a² = b² + c² + 2bc.cosA", "a² = b² + c² - 2bc.cosA", "a² = b² + c² - bc.cosA", "a² = b² - c² + 2bc.cosA"], ans: 1 },
+                { q: "Cho vector a = (2; -3) và vector b = (1; 4). Tọa độ vector u = a + b là:", options: ["(3; 1)", "(1; -7)", "(3; -1)", "(-1; 7)"], ans: 0 },
+                { q: "Số trung bình của mẫu số liệu: 4, 6, 8, 10, 12 là:", options: ["6", "8", "10", "7"], ans: 1 },
+                { q: "Bất phương trình nào sau đây là BPT bậc nhất hai ẩn?", options: ["x² + y > 0", "x + 2y < 3", "xy + 5 ≥ 0", "1/x + y ≤ 1"], ans: 1 },
+                { q: "Giá trị của cos(120°) bằng:", options: ["1/2", "-1/2", "√3/2", "-√3/2"], ans: 1 },
+                { q: "Cho hình bình hành ABCD. Khẳng định nào đúng?", options: ["vectơ AB + AD = AC", "vectơ AB - AD = AC", "vectơ AB + AC = AD", "vectơ CB + CD = CA"], ans: 0 },
+                { q: "Điểm nào sau đây thuộc miền nghiệm của hệ BPT {x - y > 0; x + y < 4}?", options: ["(1; 2)", "(3; 0)", "(0; 0)", "(2; 3)"], ans: 1 }, // (3-0>0, 3+0<4 -> Đúng)
+                { q: "Tích vô hướng của hai vectơ a và b khác 0 bằng 0 khi nào?", options: ["Hai vectơ cùng phương", "Hai vectơ cùng hướng", "Hai vectơ ngược hướng", "Hai vectơ vuông góc"], ans: 3 },
+                { q: "Quy tròn số 15.6753 đến hàng phần trăm được:", options: ["15.67", "15.68", "15.6", "15.7"], ans: 1 }
+            ],
+            tf: [
+                {
+                    q: "Một gia đình cần ít nhất 900g Protein và 400g Lipid. Thịt bò (80% Pro, 20% Lip, giá 400k/kg). Thịt lợn (60% Pro, 40% Lip, giá 200k/kg).",
+                    subs: [
+                        "Gọi x, y là số kg thịt bò, thịt lợn. Hàm chi phí là F = 400x + 200y.",
+                        "Hệ điều kiện: 0.8x + 0.6y ≥ 0.9 và 0.2x + 0.4y ≥ 0.4 (cùng x,y≥0).",
+                        "Điểm (0.6; 0.7) thuộc miền nghiệm của hệ bất phương trình.", // 0.48+0.42=0.9(Đ), 0.12+0.28=0.4(Đ) -> Đúng
+                        "Chi phí thấp nhất để đảm bảo dinh dưỡng là 380 nghìn đồng." // Tại (0.6, 0.7): 240+140=380. Tại (0.3, 1.1): 120+220=340. 340 < 380. Sai.
+                    ],
+                    ans: [true, true, true, false]
+                },
+                {
+                    q: "Cho hàm số y = ax² + bx + c có đồ thị như hình vẽ (Parabol bề lõm quay lên, cắt Ox tại 1 và 3, đỉnh tại x=2, y=-1).",
+                    subs: [
+                        "Hệ số a < 0.", // Sai, lõm lên a>0
+                        "Hàm số đồng biến trên khoảng (2; +∞).", // Đúng
+                        "Phương trình f(x) = 0 có 2 nghiệm phân biệt.", // Đúng (cắt tại 1 và 3)
+                        "Giá trị nhỏ nhất của hàm số là 1." // Sai, là -1
+                    ],
+                    ans: [false, true, true, false]
+                },
+                {
+                    q: "Cho tam giác ABC đều cạnh a.",
+                    subs: [
+                        "Độ dài vectơ AB bằng a.", // Đúng
+                        "Góc giữa vectơ AB và AC là 120 độ.", // Sai, là 60 độ
+                        "Tích vô hướng AB.AC = a²/2.", // a.a.cos60 = a^2/2. Đúng
+                        "Độ dài vectơ AB + AC bằng a√3." // Đúng (đường chéo hình thoi)
+                    ],
+                    ans: [true, false, true, true]
+                },
+                {
+                    q: "Thống kê điểm số: 6, 7, 7, 8, 9, 9, 9, 10, 10 (9 học sinh).",
+                    subs: [
+                        "Mốt của mẫu số liệu là 9.", // Đúng (xuất hiện 3 lần)
+                        "Số trung bình là 8.33 (làm tròn 2 chữ số).", // (75/9 = 8.33). Đúng
+                        "Trung vị là 8.", // Sắp xếp: 6,7,7,8,9,9,9,10,10. Số giữa là 9. Sai.
+                        "Khoảng biến thiên là 4." // 10-6=4. Đúng
+                    ],
+                    ans: [true, true, false, true]
+                }
+            ],
+            wordBank: ["độ lệch chuẩn", "vectơ đối", "trọng tâm", "tù", "cộng", "trừ", "parabol", "vuông góc"],
+            fill: [
+                { text: "Đồ thị của hàm số bậc hai là một đường cong liền nét gọi là [].", ans: "parabol" },
+                { text: "Quy tắc ba điểm: Vectơ AB + Vectơ BC = Vectơ AC là quy tắc [].", ans: "cộng" },
+                { text: "Nếu tam giác ABC có góc A > 90 độ thì góc A gọi là góc [].", ans: "tù" },
+                { text: "Số đặc trưng đo độ phân tán, bằng căn bậc hai của phương sai là [].", ans: "độ lệch chuẩn" },
+                { text: "Điểm G thỏa mãn vectơ GA + GB + GC = 0 được gọi là [] của tam giác.", ans: "trọng tâm" }
+            ],
+            sa: [
+                { q: "Cho mẫu số liệu: 10, 12, 14, 16, 18. Tìm trung vị của mẫu.", ans: "14" },
+                { q: "Tam giác ABC có a=5, c=8, góc B=60 độ. Tính độ dài cạnh b.", ans: "7" }, // b^2 = 25+64 - 2.5.8.0.5 = 89-40=49 -> b=7
+                { q: "Một vật chịu hai lực vuông góc F1=3N, F2=4N. Hợp lực có độ lớn bao nhiêu N?", ans: "5" },
+                { q: "Parabol y = x² - 2x - 3 cắt trục tung tại điểm có tung độ bằng bao nhiêu?", ans: "-3" },
+                { q: "Cho hình vuông ABCD cạnh 2. Tính tích vô hướng vectơ AB nhân vectơ AC.", ans: "4" } // AB(2,0), AC(2,2). 2*2 + 0*2 = 4. Hoặc |AB|.|AC|.cos45 = 2.2can2.can2/2 = 4
+            ]
         };
 
-        // --- STATE ---
-        let currentExamKey = 'de1';
+        // --- STATE & RENDER LOGIC ---
         let selectedWord = null;
 
-        // --- RENDER FUNCTIONS ---
-        function switchExam(key) {
-            currentExamKey = key;
-            
-            // UI Toggle
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-                btn.classList.add('inactive');
-                // Remove specific color classes
-                btn.classList.remove('bg-blue-600', 'bg-rose-600', 'text-white', 'border-blue-600', 'border-rose-600');
-            });
-
-            const activeBtn = document.getElementById(`btn-${key}`);
-            const colorClass = key === 'de1' ? 'bg-blue-600' : 'bg-rose-600';
-            const borderClass = key === 'de1' ? 'border-blue-600' : 'border-rose-600';
-            
-            activeBtn.classList.remove('inactive');
-            activeBtn.classList.add('active', colorClass, borderClass, 'text-white');
-
-            renderExam();
-        }
-
         function renderExam() {
-            const data = exams[currentExamKey];
-            const color = data.color; // 'blue' or 'rose'
-            const container = document.getElementById("exam-content");
-            container.innerHTML = ""; // Clear old content
-
-            // HELPER: Generate Section HTML
-            const createSection = (title, contentHTML) => {
-                return `
-                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-${color}-500">
-                    <h2 class="text-xl font-bold mb-4 text-${color}-700">${title}</h2>
-                    ${contentHTML}
-                </div>`;
-            };
-
             // 1. MCQ
-            let mcqHTML = `<div class="space-y-6">`;
-            data.mcq.forEach((item, idx) => {
-                mcqHTML += `
-                    <div class="p-4 border border-gray-200 rounded hover:shadow-sm bg-gray-50">
-                        <p class="font-semibold text-gray-800">Câu ${idx + 1}: ${item.q}</p>
-                        <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            ${item.options.map((opt, i) => `
-                                <label class="flex items-center space-x-2 cursor-pointer p-2 rounded hover:bg-${color}-50">
-                                    <input type="radio" name="mcq_${idx}" value="${i}" class="form-radio text-${color}-600 focus:ring-${color}-500">
-                                    <span>${opt}</span>
-                                </label>
-                            `).join('')}
-                        </div>
-                    </div>`;
+            const mcqContainer = document.getElementById("mcq-container");
+            examData.mcq.forEach((item, idx) => {
+                const div = document.createElement("div");
+                div.className = "p-4 border border-blue-100 rounded bg-blue-50 hover:shadow-sm";
+                div.innerHTML = `
+                    <p class="font-semibold text-gray-800">Câu ${idx + 1}: ${item.q}</p>
+                    <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        ${item.options.map((opt, i) => `
+                            <label class="flex items-center space-x-2 cursor-pointer p-2 rounded hover:bg-blue-100 transition">
+                                <input type="radio" name="mcq_${idx}" value="${i}" class="form-radio text-blue-600 focus:ring-blue-500 h-5 w-5">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                mcqContainer.appendChild(div);
             });
-            mcqHTML += `</div>`;
-            container.insertAdjacentHTML('beforeend', createSection("PHẦN I: TRẮC NGHIỆM (12 Câu - 3.0 điểm)", mcqHTML));
 
-            // 2. TRUE/FALSE
-            let tfHTML = `<div class="space-y-8">`;
-            data.tf.forEach((item, idx) => {
-                tfHTML += `
-                    <div class="p-4 border border-gray-200 rounded hover:shadow-sm">
-                        <p class="font-semibold text-gray-800 mb-2">Câu ${idx + 1}: ${item.q}</p>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full text-sm text-left">
-                                <thead class="bg-${color}-100 text-xs uppercase font-semibold text-${color}-800">
+            // 2. TF
+            const tfContainer = document.getElementById("tf-container");
+            examData.tf.forEach((item, idx) => {
+                const div = document.createElement("div");
+                div.className = "p-4 border border-orange-100 rounded bg-orange-50 hover:shadow-sm";
+                div.innerHTML = `
+                    <p class="font-semibold text-gray-800 mb-2">Câu ${idx + 1}: ${item.q}</p>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-sm text-left">
+                            <thead class="bg-orange-100 text-xs uppercase font-semibold text-orange-800">
+                                <tr>
+                                    <th class="px-4 py-2">Mệnh đề</th>
+                                    <th class="px-4 py-2 w-16 text-center">Đúng</th>
+                                    <th class="px-4 py-2 w-16 text-center">Sai</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-orange-200">
+                                ${item.subs.map((sub, i) => `
                                     <tr>
-                                        <th class="px-4 py-2">Mệnh đề</th>
-                                        <th class="px-4 py-2 w-16 text-center">Đúng</th>
-                                        <th class="px-4 py-2 w-16 text-center">Sai</th>
+                                        <td class="px-4 py-2">${String.fromCharCode(97+i)}) ${sub}</td>
+                                        <td class="px-4 py-2 text-center"><input type="radio" name="tf_${idx}_${i}" value="true" class="text-orange-600 focus:ring-orange-500 h-4 w-4"></td>
+                                        <td class="px-4 py-2 text-center"><input type="radio" name="tf_${idx}_${i}" value="false" class="text-orange-600 focus:ring-orange-500 h-4 w-4"></td>
                                     </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-200">
-                                    ${item.subs.map((sub, i) => `
-                                        <tr>
-                                            <td class="px-4 py-2">${String.fromCharCode(97+i)}) ${sub}</td>
-                                            <td class="px-4 py-2 text-center"><input type="radio" name="tf_${idx}_${i}" value="true" class="text-${color}-600 focus:ring-${color}-500"></td>
-                                            <td class="px-4 py-2 text-center"><input type="radio" name="tf_${idx}_${i}" value="false" class="text-${color}-600 focus:ring-${color}-500"></td>
-                                        </tr>
-                                    `).join('')}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>`;
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                tfContainer.appendChild(div);
             });
-            tfHTML += `</div>`;
-            container.insertAdjacentHTML('beforeend', createSection("PHẦN II: ĐÚNG / SAI (4 Câu - 4.0 điểm)", tfHTML));
 
-            // 3. FILL IN BLANK
-            let fillHTML = `
-                <div class="bg-${color}-50 p-4 rounded-lg mb-6 sticky top-2 z-10 shadow-sm border border-${color}-200">
-                    <h3 class="font-bold text-${color}-800 mb-2 text-sm uppercase">Ngân hàng từ khóa (Click để chọn):</h3>
-                    <div id="word-bank" class="flex flex-wrap gap-2"></div>
-                </div>
-                <div class="space-y-4">`;
-            
-            // Logic to render words is separate because of onClick events, 
-            // but we render container first.
-            
-            data.fill.forEach((item, idx) => {
-                const html = item.text.replace("[]", `<span class="drop-target border-${color}-300 text-${color}-800" id="fill_${idx}" onclick="dropWord(this, '${color}')">...</span>`);
-                fillHTML += `
-                    <div class="p-3 border-b border-gray-100 last:border-0">
-                        <span class="font-bold text-${color}-800 mr-2">${idx + 1}.</span> ${html}
-                    </div>`;
-            });
-            fillHTML += `</div>`;
-            container.insertAdjacentHTML('beforeend', createSection("PHẦN III: ĐIỀN KHUYẾT (5 Câu - 1.0 điểm)", fillHTML));
-            
-            // Render Words after inserting HTML
-            const bankContainer = document.getElementById("word-bank");
-            data.wordBank.forEach(word => {
+            // 3. FILL
+            const wordBank = document.getElementById("word-bank");
+            examData.wordBank.forEach(word => {
                 const span = document.createElement("span");
-                span.className = `drag-source bg-white border border-${color}-300 text-${color}-700 px-3 py-1 rounded shadow-sm text-sm font-medium hover:bg-${color}-100`;
+                span.className = "drag-source bg-white border border-purple-300 text-purple-700 px-3 py-1 rounded shadow-sm text-sm font-medium hover:bg-purple-100";
                 span.innerText = word;
-                span.onclick = () => selectWord(span, word, color);
-                bankContainer.appendChild(span);
+                span.onclick = () => selectWord(span, word);
+                wordBank.appendChild(span);
             });
 
-            // 4. SHORT ANSWER
-            let saHTML = `<div class="space-y-6">`;
-            data.sa.forEach((item, idx) => {
-                saHTML += `
-                    <div class="p-4 border border-gray-200 rounded bg-gray-50">
-                        <p class="font-semibold text-gray-800 mb-2">Câu ${idx + 1}: ${item.q}</p>
-                        <input type="text" id="sa_${idx}" class="w-full p-2 border border-${color}-300 rounded focus:outline-none focus:ring-1 focus:ring-${color}-500" placeholder="Nhập kết quả số...">
-                    </div>`;
+            const fillContainer = document.getElementById("fill-container");
+            examData.fill.forEach((item, idx) => {
+                const div = document.createElement("div");
+                div.className = "p-3 border-b border-purple-100 last:border-0";
+                const html = item.text.replace("[]", `<span class="drop-target border-purple-300 text-purple-800" id="fill_${idx}" onclick="dropWord(this)">...</span>`);
+                div.innerHTML = `<span class="font-bold text-purple-800 mr-2">${idx + 1}.</span> ${html}`;
+                fillContainer.appendChild(div);
             });
-            saHTML += `</div>`;
-            container.insertAdjacentHTML('beforeend', createSection("PHẦN IV: TRẢ LỜI NGẮN (5 Câu - 2.0 điểm)", saHTML));
+
+            // 4. SA
+            const saContainer = document.getElementById("sa-container");
+            examData.sa.forEach((item, idx) => {
+                const div = document.createElement("div");
+                div.className = "p-4 border border-red-200 rounded bg-red-50";
+                div.innerHTML = `
+                    <p class="font-semibold text-gray-800 mb-2">Câu ${idx + 1}: ${item.q}</p>
+                    <input type="text" id="sa_${idx}" class="w-full p-2 border border-red-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500 bg-white" placeholder="Nhập kết quả số...">
+                `;
+                saContainer.appendChild(div);
+            });
         }
 
-        // --- INTERACTION LOGIC ---
-        function selectWord(el, word, color) {
-            document.querySelectorAll('.drag-source').forEach(e => {
-                e.classList.remove('selected', `bg-${color}-600`, 'text-white');
-                e.classList.add('bg-white', `text-${color}-700`);
-            });
-            
+        // Logic Kéo Thả
+        function selectWord(el, word) {
+            document.querySelectorAll('.drag-source').forEach(e => e.classList.remove('selected'));
             if (selectedWord === word) {
-                selectedWord = null; // Toggle off
+                selectedWord = null;
             } else {
                 selectedWord = word;
-                el.classList.remove('bg-white', `text-${color}-700`);
-                el.classList.add('selected', `bg-${color}-600`, 'text-white');
+                el.classList.add('selected');
             }
         }
 
-        function dropWord(el, color) {
+        function dropWord(el) {
             if (selectedWord) {
                 el.innerText = selectedWord;
-                el.classList.add('filled', `bg-${color}-100`, `border-${color}-500`);
-                // Reset
+                el.classList.add('filled');
                 selectedWord = null;
-                document.querySelectorAll('.drag-source').forEach(e => {
-                    e.classList.remove('selected', `bg-${color}-600`, 'text-white');
-                    e.classList.add('bg-white', `text-${color}-700`);
-                });
+                document.querySelectorAll('.drag-source').forEach(e => e.classList.remove('selected'));
             } else {
                 el.innerText = "...";
-                el.classList.remove('filled', `bg-${color}-100`, `border-${color}-500`);
+                el.classList.remove('filled');
             }
         }
 
-        // --- SUBMISSION ---
+        // Chấm điểm & Gửi
         async function submitExam() {
             const studentName = document.getElementById("studentName").value.trim();
             const groupName = document.getElementById("groupName").value.trim();
 
             if (!studentName || !groupName) {
                 alert("Vui lòng nhập Họ tên và Lớp trước khi nộp bài!");
-                window.scrollTo(0,0);
                 return;
             }
 
-            if(!confirm(`Bạn chắc chắn muốn nộp bài ${exams[currentExamKey].name}?`)) return;
+            if(!confirm("Bạn có chắc chắn muốn nộp bài?")) return;
 
             document.getElementById("loading").style.display = "flex";
 
-            const data = exams[currentExamKey];
             let p1 = 0, p2 = 0, p3 = 0, p4 = 0;
+            const answerLog = []; // Lưu trữ đáp án chi tiết
 
-            // 1. MCQ Grading (0.25/q)
-            data.mcq.forEach((item, idx) => {
+            // Chấm MCQ (0.25đ/câu)
+            examData.mcq.forEach((item, idx) => {
                 const selected = document.querySelector(`input[name="mcq_${idx}"]:checked`);
-                if (selected && parseInt(selected.value) === item.ans) p1 += 0.25;
+                let ansStr = "X";
+                if (selected) {
+                    const val = parseInt(selected.value);
+                    ansStr = String.fromCharCode(65 + val); // Chuyển 0->A, 1->B...
+                    if (val === item.ans) p1 += 0.25;
+                }
+                answerLog.push(ansStr);
             });
 
-            // 2. TF Grading (0.25 per correct sub-statement)
-            data.tf.forEach((item, idx) => {
+            // Chấm TF (0.25đ/ý đúng)
+            examData.tf.forEach((item, idx) => {
+                let questionResult = [];
                 item.subs.forEach((sub, i) => {
                     const selected = document.querySelector(`input[name="tf_${idx}_${i}"]:checked`);
                     if (selected) {
                         const val = selected.value === "true";
                         if (val === item.ans[i]) p2 += 0.25;
+                        questionResult.push(String.fromCharCode(97+i) + ":" + (val ? "Đ" : "S"));
+                    } else {
+                        questionResult.push(String.fromCharCode(97+i) + ":X");
                     }
                 });
+                answerLog.push(questionResult.join(", "));
             });
 
-            // 3. Fill Grading (0.2/q)
-            data.fill.forEach((item, idx) => {
+            // Chấm Fill (0.2đ/câu)
+            examData.fill.forEach((item, idx) => {
                 const el = document.getElementById(`fill_${idx}`);
-                if (el.innerText.trim() === item.ans) p3 += 0.2;
+                const userText = el.innerText.trim();
+                if (userText === "...") {
+                     answerLog.push("X");
+                } else {
+                     answerLog.push(userText);
+                     if (userText.toLowerCase() === item.ans.toLowerCase()) p3 += 0.2;
+                }
             });
 
-            // 4. Short Answer Grading (0.4/q)
-            data.sa.forEach((item, idx) => {
+            // Chấm SA (0.4đ/câu)
+            examData.sa.forEach((item, idx) => {
                 const val = document.getElementById(`sa_${idx}`).value.trim();
-                // Simple string matching, case insensitive
-                if (val.toLowerCase() === item.ans.toLowerCase()) p4 += 0.4;
+                answerLog.push(val || "X");
+                if (val && val.toLowerCase() === item.ans.toLowerCase()) p4 += 0.4;
             });
 
             const score = Math.round((p1 + p2 + p3 + p4) * 100) / 100;
+            
+            // Xây dựng chuỗi thông báo tổng điểm
+            const scoreSummary = [
+                `${score} / 10`,
+                `TN: ${p1}/3.0`,
+                `Đ/S: ${p2}/4.0`,
+                `Điền: ${p3}/1.0`,
+                `Ngắn: ${p4}/2.0`
+            ];
 
-            // Lấy tiêu đề ứng dụng
-            const appTitle = document.title;
+            // Gộp thông tin tổng điểm và danh sách trả lời
+            const finalScoresPayload = [...scoreSummary, ...answerLog];
 
+            // Payload gửi đi
             const payload = {
-                role: appTitle, // Gửi tiêu đề ứng dụng vào cột Role (Cột B)
+                role: document.getElementById('appTitle').innerText, // Gửi tiêu đề ứng dụng
                 evaluator: studentName,
                 groupName: groupName,
-                week: currentExamKey.toUpperCase(), // DE1 or DE2
-                scores: [
-                    p1, 
-                    p2, 
-                    p3, 
-                    p4, 
-                    score,
-                    `Tổng: ${score}/10` // Thêm chuỗi thông báo tổng điểm vào cuối mảng điểm
-                ]
+                week: "DE_MOI_CTST",
+                scores: finalScoresPayload
             };
 
-            // Send to Google Sheet
             try {
+                // Gửi request
                 await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -476,10 +420,9 @@
                     body: JSON.stringify(payload)
                 });
 
-                // Show Results
+                // Hiển thị kết quả
                 document.getElementById("loading").style.display = "none";
                 document.getElementById("resName").innerText = studentName + " (" + groupName + ")";
-                document.getElementById("resExam").innerText = data.name;
                 document.getElementById("resTotal").innerText = score + " / 10";
                 
                 document.getElementById("resP1").innerText = `${p1}/3.0`;
@@ -492,21 +435,22 @@
 
             } catch (error) {
                 console.error(error);
-                alert("Lỗi kết nối. Vui lòng thử lại!");
+                alert("Lỗi kết nối. Vui lòng chụp lại màn hình kết quả!");
                 document.getElementById("loading").style.display = "none";
+                // Vẫn hiện kết quả local
+                document.getElementById("resultModal").classList.remove("hidden");
+                document.getElementById("resultModal").classList.add("flex");
             }
         }
 
         function closeModal() {
             document.getElementById("resultModal").classList.add("hidden");
             document.getElementById("resultModal").classList.remove("flex");
-            // Optional: reset form or reload page
-            // location.reload(); 
         }
 
         // Init
         window.onload = function() {
-            switchExam('de1');
+            renderExam();
         }
     </script>
 </body>
