@@ -143,8 +143,8 @@
 
     <script>
         // --- CẤU HÌNH ---
-        // THAY URL BÊN DƯỚI BẰNG LINK APP SCRIPT CỦA BẠN
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyJWMaddIsApd6YnRvun1dcvLu48MTc0fP39AxIKIUkX0zCZZo3G-dm2XY3wrMil5fp/exec'; 
+        // Link Apps Script bạn đã cung cấp
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJWMaddIsApd6YnRvun1dcvLu48MTc0fP39AxIKIUkX0zCZZo3G-dm2XY3wrMil5fp/exec"; 
 
         // --- DỮ LIỆU ĐỀ THI ---
         const examData = {
@@ -346,10 +346,9 @@
                 // Gửi request POST đến Apps Script
                 const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
-                    // Quan trọng: Để đọc được phản hồi từ Apps Script, ta không dùng 'no-cors'
-                    // Tuy nhiên, Apps Script Web App cần trả về redirect 302, fetch sẽ follow.
-                    // Nếu gặp lỗi CORS, cần đảm bảo Apps Script được set "Anyone" access.
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // text/plain để tránh preflight option
+                    // Quan trọng: Để đọc được phản hồi từ Apps Script, ta không dùng 'no-cors' cho chức năng chấm điểm vì cần đọc response
+                    // Tuy nhiên, nếu gặp lỗi CORS thì Apps Script phải được deploy với quyền 'Anyone'.
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // Dùng text/plain để tránh preflight request
                     body: JSON.stringify(payload)
                 });
                 
@@ -480,7 +479,7 @@
                 await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors', // Dùng no-cors cho thao tác lưu để đảm bảo thành công cao nhất
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // Sửa thành text/plain cho no-cors
                     body: JSON.stringify(payload)
                 });
 
