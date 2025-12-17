@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đề Ôn Tập Toán 10 HK1 - CTST</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Thêm Markdown Parser để hiển thị lời giải từ AI đẹp hơn nếu cần -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
         body { font-family: 'Roboto', sans-serif; background-color: #f0fdf4; }
@@ -16,8 +18,8 @@
         .drop-target.filled { border-style: solid; background-color: #dcfce7; border-color: #166534; }
 
         /* Loading */
-        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 50; }
-        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #16a34a; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 50; flex-direction: column; color: white; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #16a34a; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
@@ -26,6 +28,7 @@
     <!-- Loading Screen -->
     <div id="loading" class="loading-overlay">
         <div class="spinner"></div>
+        <p id="loading-text" class="font-bold">Đang xử lý...</p>
     </div>
 
     <div class="max-w-5xl mx-auto p-4">
@@ -49,6 +52,22 @@
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2">Lớp</label>
                     <input type="text" id="groupName" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Ví dụ: 10A1">
+                </div>
+            </div>
+            
+            <!-- Gemini API Config -->
+            <div class="mt-4 pt-4 border-t border-gray-100">
+                <div class="flex items-center justify-between cursor-pointer" onclick="document.getElementById('ai-config').classList.toggle('hidden')">
+                    <span class="text-sm font-bold text-indigo-600 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                        Cấu hình chấm điểm thông minh (AI)
+                    </span>
+                    <svg class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </div>
+                <div id="ai-config" class="hidden mt-3 bg-indigo-50 p-3 rounded text-sm">
+                    <label class="block text-gray-700 font-bold mb-1">Gemini API Key (Tùy chọn):</label>
+                    <input type="password" id="geminiApiKey" class="w-full p-2 border border-indigo-200 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Dán API Key vào đây để chấm phần tự luận linh hoạt hơn...">
+                    <p class="text-xs text-gray-500 mt-1">Nếu bỏ trống, hệ thống sẽ chấm chính xác từng ký tự (Case-insensitive).</p>
                 </div>
             </div>
         </div>
@@ -90,7 +109,12 @@
 
             <!-- PHẦN 4: TRẢ LỜI NGẮN -->
             <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-red-500">
-                <h2 class="text-xl font-bold mb-4 text-red-700">PHẦN IV: TRẢ LỜI NGẮN (5 Câu - 2.0 điểm)</h2>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-red-700">PHẦN IV: TRẢ LỜI NGẮN (5 Câu - 2.0 điểm)</h2>
+                    <span id="ai-badge" class="hidden text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded font-bold border border-indigo-200 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg> AI Active
+                    </span>
+                </div>
                 <div id="sa-container" class="space-y-6">
                     <!-- JS renders SA questions here -->
                 </div>
@@ -108,7 +132,7 @@
 
     <!-- Result Modal -->
     <div id="resultModal" class="fixed inset-0 bg-gray-900 bg-opacity-60 hidden items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-xl p-6 md:p-8 max-w-md w-full shadow-2xl transform transition-all scale-100">
+        <div class="bg-white rounded-xl p-6 md:p-8 max-w-md w-full shadow-2xl transform transition-all scale-100 overflow-y-auto max-h-[90vh]">
             <div class="text-center">
                 <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
                     <svg class="h-10 w-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -152,7 +176,7 @@
                 { q: "Bất phương trình nào sau đây là BPT bậc nhất hai ẩn?", options: ["x² + y > 0", "x + 2y < 3", "xy + 5 ≥ 0", "1/x + y ≤ 1"], ans: 1 },
                 { q: "Giá trị của cos(120°) bằng:", options: ["1/2", "-1/2", "√3/2", "-√3/2"], ans: 1 },
                 { q: "Cho hình bình hành ABCD. Khẳng định nào đúng?", options: ["vectơ AB + AD = AC", "vectơ AB - AD = AC", "vectơ AB + AC = AD", "vectơ CB + CD = CA"], ans: 0 },
-                { q: "Điểm nào sau đây thuộc miền nghiệm của hệ BPT {x - y > 0; x + y < 4}?", options: ["(1; 2)", "(3; 0)", "(0; 0)", "(2; 3)"], ans: 1 }, // (3-0>0, 3+0<4 -> Đúng)
+                { q: "Điểm nào sau đây thuộc miền nghiệm của hệ BPT {x - y > 0; x + y < 4}?", options: ["(1; 2)", "(3; 0)", "(0; 0)", "(2; 3)"], ans: 1 },
                 { q: "Tích vô hướng của hai vectơ a và b khác 0 bằng 0 khi nào?", options: ["Hai vectơ cùng phương", "Hai vectơ cùng hướng", "Hai vectơ ngược hướng", "Hai vectơ vuông góc"], ans: 3 },
                 { q: "Quy tròn số 15.6753 đến hàng phần trăm được:", options: ["15.67", "15.68", "15.6", "15.7"], ans: 1 }
             ],
@@ -162,38 +186,38 @@
                     subs: [
                         "Gọi x, y là số kg thịt bò, thịt lợn. Hàm chi phí là F = 400x + 200y.",
                         "Hệ điều kiện: 0.8x + 0.6y ≥ 0.9 và 0.2x + 0.4y ≥ 0.4 (cùng x,y≥0).",
-                        "Điểm (0.6; 0.7) thuộc miền nghiệm của hệ bất phương trình.", // 0.48+0.42=0.9(Đ), 0.12+0.28=0.4(Đ) -> Đúng
-                        "Chi phí thấp nhất để đảm bảo dinh dưỡng là 380 nghìn đồng." // Tại (0.6, 0.7): 240+140=380. Tại (0.3, 1.1): 120+220=340. 340 < 380. Sai.
+                        "Điểm (0.6; 0.7) thuộc miền nghiệm của hệ bất phương trình.",
+                        "Chi phí thấp nhất để đảm bảo dinh dưỡng là 380 nghìn đồng."
                     ],
                     ans: [true, true, true, false]
                 },
                 {
                     q: "Cho hàm số y = ax² + bx + c có đồ thị như hình vẽ (Parabol bề lõm quay lên, cắt Ox tại 1 và 3, đỉnh tại x=2, y=-1).",
                     subs: [
-                        "Hệ số a < 0.", // Sai, lõm lên a>0
-                        "Hàm số đồng biến trên khoảng (2; +∞).", // Đúng
-                        "Phương trình f(x) = 0 có 2 nghiệm phân biệt.", // Đúng (cắt tại 1 và 3)
-                        "Giá trị nhỏ nhất của hàm số là 1." // Sai, là -1
+                        "Hệ số a < 0.",
+                        "Hàm số đồng biến trên khoảng (2; +∞).",
+                        "Phương trình f(x) = 0 có 2 nghiệm phân biệt.",
+                        "Giá trị nhỏ nhất của hàm số là 1."
                     ],
                     ans: [false, true, true, false]
                 },
                 {
                     q: "Cho tam giác ABC đều cạnh a.",
                     subs: [
-                        "Độ dài vectơ AB bằng a.", // Đúng
-                        "Góc giữa vectơ AB và AC là 120 độ.", // Sai, là 60 độ
-                        "Tích vô hướng AB.AC = a²/2.", // a.a.cos60 = a^2/2. Đúng
-                        "Độ dài vectơ AB + AC bằng a√3." // Đúng (đường chéo hình thoi)
+                        "Độ dài vectơ AB bằng a.",
+                        "Góc giữa vectơ AB và AC là 120 độ.",
+                        "Tích vô hướng AB.AC = a²/2.",
+                        "Độ dài vectơ AB + AC bằng a√3."
                     ],
                     ans: [true, false, true, true]
                 },
                 {
                     q: "Thống kê điểm số: 6, 7, 7, 8, 9, 9, 9, 10, 10 (9 học sinh).",
                     subs: [
-                        "Mốt của mẫu số liệu là 9.", // Đúng (xuất hiện 3 lần)
-                        "Số trung bình là 8.33 (làm tròn 2 chữ số).", // (75/9 = 8.33). Đúng
-                        "Trung vị là 8.", // Sắp xếp: 6,7,7,8,9,9,9,10,10. Số giữa là 9. Sai.
-                        "Khoảng biến thiên là 4." // 10-6=4. Đúng
+                        "Mốt của mẫu số liệu là 9.",
+                        "Số trung bình là 8.33 (làm tròn 2 chữ số).",
+                        "Trung vị là 8.",
+                        "Khoảng biến thiên là 4."
                     ],
                     ans: [true, true, false, true]
                 }
@@ -208,10 +232,10 @@
             ],
             sa: [
                 { q: "Cho mẫu số liệu: 10, 12, 14, 16, 18. Tìm trung vị của mẫu.", ans: "14" },
-                { q: "Tam giác ABC có a=5, c=8, góc B=60 độ. Tính độ dài cạnh b.", ans: "7" }, // b^2 = 25+64 - 2.5.8.0.5 = 89-40=49 -> b=7
+                { q: "Tam giác ABC có a=5, c=8, góc B=60 độ. Tính độ dài cạnh b.", ans: "7" },
                 { q: "Một vật chịu hai lực vuông góc F1=3N, F2=4N. Hợp lực có độ lớn bao nhiêu N?", ans: "5" },
                 { q: "Parabol y = x² - 2x - 3 cắt trục tung tại điểm có tung độ bằng bao nhiêu?", ans: "-3" },
-                { q: "Cho hình vuông ABCD cạnh 2. Tính tích vô hướng vectơ AB nhân vectơ AC.", ans: "4" } // AB(2,0), AC(2,2). 2*2 + 0*2 = 4. Hoặc |AB|.|AC|.cos45 = 2.2can2.can2/2 = 4
+                { q: "Cho hình vuông ABCD cạnh 2. Tính tích vô hướng vectơ AB nhân vectơ AC.", ans: "4" }
             ]
         };
 
@@ -219,6 +243,17 @@
         let selectedWord = null;
 
         function renderExam() {
+            // Hiển thị trạng thái AI Badge nếu đã nhập Key
+            const apiKeyInput = document.getElementById('geminiApiKey');
+            apiKeyInput.addEventListener('input', function() {
+                const badge = document.getElementById('ai-badge');
+                if(this.value.trim().length > 0) {
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            });
+
             // 1. MCQ
             const mcqContainer = document.getElementById("mcq-container");
             examData.mcq.forEach((item, idx) => {
@@ -295,7 +330,8 @@
                 div.className = "p-4 border border-red-200 rounded bg-red-50";
                 div.innerHTML = `
                     <p class="font-semibold text-gray-800 mb-2">Câu ${idx + 1}: ${item.q}</p>
-                    <input type="text" id="sa_${idx}" class="w-full p-2 border border-red-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500 bg-white" placeholder="Nhập kết quả số...">
+                    <input type="text" id="sa_${idx}" class="w-full p-2 border border-red-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500 bg-white" placeholder="Nhập kết quả số (Ví dụ: 5, 2a, căn 3...)">
+                    <p class="text-xs text-red-400 mt-1 hidden" id="sa_feedback_${idx}"></p>
                 `;
                 saContainer.appendChild(div);
             });
@@ -324,10 +360,58 @@
             }
         }
 
+        // --- GEMINI AI GRADING LOGIC ---
+        async function gradeShortAnswersWithGemini(apiKey, saData, userAnswers) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            
+            // Xây dựng prompt
+            const itemsToGrade = saData.map((item, idx) => {
+                return `Câu ${idx+1}: "${item.q}". Đáp án đúng: "${item.ans}". Học sinh trả lời: "${userAnswers[idx]}".`;
+            }).join("\n");
+
+            const prompt = `Bạn là một giáo viên Toán 10. Hãy chấm điểm các câu trả lời ngắn sau đây.
+            Nguyên tắc chấm: 
+            1. So sánh "Học sinh trả lời" với "Đáp án đúng". 
+            2. Chấp nhận các cách viết khác nhau nhưng cùng giá trị (ví dụ: "0.5" = "1/2", "5" = "5N", "căn 2" = "√2").
+            3. Bỏ qua lỗi chính tả nhỏ hoặc viết hoa/thường.
+            4. Trả về kết quả dưới dạng JSON Array thuần túy, không có markdown block.
+            Format JSON: [{ "index": 0, "isCorrect": true/false }, { "index": 1, ... }]
+            
+            Dữ liệu cần chấm:
+            ${itemsToGrade}`;
+
+            const payload = {
+                contents: [{
+                    parts: [{ text: prompt }]
+                }]
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) throw new Error("API Gemini lỗi");
+                
+                const data = await response.json();
+                const text = data.candidates[0].content.parts[0].text;
+                
+                // Làm sạch JSON (bỏ markdown ```json nếu có)
+                const jsonStr = text.replace(/```json/g, '').replace(/```/g, '').trim();
+                return JSON.parse(jsonStr);
+            } catch (error) {
+                console.error("Gemini Error:", error);
+                return null; // Trả về null để fallback về chấm thường
+            }
+        }
+
         // Chấm điểm & Gửi
         async function submitExam() {
             const studentName = document.getElementById("studentName").value.trim();
             const groupName = document.getElementById("groupName").value.trim();
+            const apiKey = document.getElementById("geminiApiKey").value.trim();
 
             if (!studentName || !groupName) {
                 alert("Vui lòng nhập Họ tên và Lớp trước khi nộp bài!");
@@ -337,41 +421,42 @@
             if(!confirm("Bạn có chắc chắn muốn nộp bài?")) return;
 
             document.getElementById("loading").style.display = "flex";
+            document.getElementById("loading-text").innerText = apiKey ? "Đang chấm điểm bằng AI..." : "Đang xử lý...";
 
             let p1 = 0, p2 = 0, p3 = 0, p4 = 0;
-            const answerLog = []; // Lưu trữ đáp án chi tiết
+            const answerLog = []; // Lưu đáp án
+            const headersLog = []; // Lưu tiêu đề câu hỏi tương ứng
 
-            // Chấm MCQ (0.25đ/câu)
+            // 1. Chấm MCQ
             examData.mcq.forEach((item, idx) => {
                 const selected = document.querySelector(`input[name="mcq_${idx}"]:checked`);
                 let ansStr = "X";
                 if (selected) {
                     const val = parseInt(selected.value);
-                    ansStr = (val === item.ans) ? "Đ" : "S"; // Ghi nhận Đ/S thay vì A/B/C/D
+                    ansStr = (val === item.ans) ? "Đ" : "S";
                     if (val === item.ans) p1 += 0.25;
                 }
                 answerLog.push(ansStr);
+                headersLog.push(`Câu TN ${idx + 1}`);
             });
 
-            // Chấm TF (0.25đ/ý đúng)
+            // 2. Chấm TF
             examData.tf.forEach((item, idx) => {
-                let questionResult = [];
                 item.subs.forEach((sub, i) => {
                     const selected = document.querySelector(`input[name="tf_${idx}_${i}"]:checked`);
+                    let res = "X";
                     if (selected) {
                         const val = selected.value === "true";
                         const isCorrect = (val === item.ans[i]);
                         if (isCorrect) p2 += 0.25;
-                        // Ghi nhận Đ (nếu làm đúng) hoặc S (nếu làm sai) cho từng ý
-                        questionResult.push(String.fromCharCode(97+i) + ":" + (isCorrect ? "Đ" : "S"));
-                    } else {
-                        questionResult.push(String.fromCharCode(97+i) + ":X");
+                        res = isCorrect ? "Đ" : "S";
                     }
+                    answerLog.push(res);
+                    headersLog.push(`Câu ĐS ${idx + 1}${String.fromCharCode(97+i)}`);
                 });
-                answerLog.push(questionResult.join(", "));
             });
 
-            // Chấm Fill (0.2đ/câu)
+            // 3. Chấm Fill (Kéo thả - Exact match)
             examData.fill.forEach((item, idx) => {
                 const el = document.getElementById(`fill_${idx}`);
                 const userText = el.innerText.trim();
@@ -381,41 +466,61 @@
                      answerLog.push(userText);
                      if (userText.toLowerCase() === item.ans.toLowerCase()) p3 += 0.2;
                 }
+                headersLog.push(`Câu Điền ${idx + 1}`);
             });
 
-            // Chấm SA (0.4đ/câu)
+            // 4. Chấm SA (Trả lời ngắn) - Có AI hoặc Không
+            const saUserAnswers = [];
             examData.sa.forEach((item, idx) => {
                 const val = document.getElementById(`sa_${idx}`).value.trim();
-                answerLog.push(val || "X");
-                if (val && val.toLowerCase() === item.ans.toLowerCase()) p4 += 0.4;
+                saUserAnswers.push(val || "");
+                headersLog.push(`Câu Ngắn ${idx + 1}`);
+            });
+
+            let aiResults = null;
+            if (apiKey) {
+                // Gọi Gemini
+                aiResults = await gradeShortAnswersWithGemini(apiKey, examData.sa, saUserAnswers);
+            }
+
+            // Tính điểm SA
+            examData.sa.forEach((item, idx) => {
+                const userVal = saUserAnswers[idx];
+                let isCorrect = false;
+
+                if (aiResults) {
+                    // Dùng kết quả AI
+                    const aiGrade = aiResults.find(r => r.index === idx);
+                    if (aiGrade && aiGrade.isCorrect) isCorrect = true;
+                } else {
+                    // Dùng so khớp chuỗi truyền thống
+                    if (userVal && userVal.toLowerCase() === item.ans.toLowerCase()) isCorrect = true;
+                }
+
+                if (isCorrect) p4 += 0.4;
+                answerLog.push(userVal || "X"); // Ghi lại câu trả lời
             });
 
             const score = Math.round((p1 + p2 + p3 + p4) * 100) / 100;
             
-            // Xây dựng chuỗi thông báo tổng điểm
+            // Thông tin tổng điểm
             const appTitle = document.getElementById('appTitle').innerText;
-            const scoreSummary = [
-                `${score} / 10`,
-                `TN: ${p1}/3.0`,
-                `Đ/S: ${p2}/4.0`,
-                `Điền: ${p3}/1.0`,
-                `Ngắn: ${p4}/2.0`
-            ];
-
-            // Gộp thông tin tổng điểm và danh sách trả lời
-            const finalScoresPayload = [...scoreSummary, ...answerLog];
+            const summaryScores = [`${score}/10`, `${p1}/3.0`, `${p2}/4.0`, `${p3}/1.0`, `${p4}/2.0`];
+            const summaryHeaders = ["Tổng Điểm", "Điểm TN", "Điểm ĐS", "Điểm Điền", "Điểm Ngắn"];
 
             // Payload gửi đi
             const payload = {
-                role: appTitle, // Gửi tiêu đề ứng dụng
+                role: appTitle, 
                 evaluator: studentName,
                 groupName: groupName,
                 week: "DE_MOI_CTST",
-                scores: finalScoresPayload
+                headers: summaryHeaders.concat(headersLog), 
+                scores: summaryScores.concat(answerLog)     
             };
 
             try {
-                // Gửi request
+                // Gửi request về Apps Script
+                document.getElementById("loading-text").innerText = "Đang lưu kết quả...";
                 await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -438,9 +543,8 @@
 
             } catch (error) {
                 console.error(error);
-                alert("Lỗi kết nối. Vui lòng chụp lại màn hình kết quả!");
+                alert("Lỗi kết nối hoặc API Key không hợp lệ. Vui lòng thử lại!");
                 document.getElementById("loading").style.display = "none";
-                // Vẫn hiện kết quả local
                 document.getElementById("resultModal").classList.remove("hidden");
                 document.getElementById("resultModal").classList.add("flex");
             }
