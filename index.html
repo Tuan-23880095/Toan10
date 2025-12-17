@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đề Ôn Tập Toán 10 HK1 - CTST</title>
+    <title>Ôn Tập Toán 10 - Tổng Hợp 5 Đề</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
@@ -19,6 +19,9 @@
         .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 50; flex-direction: column; color: white; }
         .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #16a34a; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* Ẩn hiện section */
+        .hidden-section { display: none !important; }
     </style>
 </head>
 <body>
@@ -31,9 +34,23 @@
 
     <div class="max-w-5xl mx-auto p-4">
         <!-- Header -->
-        <header class="bg-gradient-to-r from-green-700 to-emerald-800 text-white p-6 rounded-t-lg shadow-lg mb-6">
+        <header class="bg-gradient-to-r from-green-700 to-emerald-800 text-white p-6 rounded-t-lg shadow-lg mb-6 relative">
             <h1 class="text-2xl md:text-3xl font-bold text-center uppercase" id="appTitle">Ôn Tập Toán 10 Cuối Kỳ 1</h1>
-            <p class="text-center mt-2 text-green-100 italic">Biên soạn theo chương trình Chân Trời Sáng Tạo</p>
+            <p class="text-center mt-2 text-green-100 italic">Tổng hợp 5 đề ôn tập (CTST - KNTT - CD)</p>
+            
+            <!-- Exam Selector -->
+            <div class="mt-4 flex justify-center">
+                <div class="bg-white/20 p-1 rounded-lg backdrop-blur-sm">
+                    <span class="mr-2 font-bold text-green-50">Chọn Đề:</span>
+                    <select id="examSelect" onchange="changeExam()" class="text-gray-800 font-bold py-1 px-3 rounded cursor-pointer focus:outline-none focus:ring-2 focus:ring-green-400">
+                        <option value="0">Đề 1 (Cơ bản)</option>
+                        <option value="1">Đề 2 (Tổng hợp)</option>
+                        <option value="2">Đề 3 (Hà Nội)</option>
+                        <option value="3">Đề 4 (Thử sức)</option>
+                        <option value="4">Đề 5 (Trắc nghiệm)</option>
+                    </select>
+                </div>
+            </div>
         </header>
 
         <!-- Student Info -->
@@ -59,7 +76,7 @@
             
             <!-- PHẦN 1: TRẮC NGHIỆM -->
             <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-blue-500">
-                <h2 class="text-xl font-bold mb-4 text-blue-700">PHẦN I: TRẮC NGHIỆM (12 Câu - 3.0 điểm)</h2>
+                <h2 class="text-xl font-bold mb-4 text-blue-700">PHẦN I: TRẮC NGHIỆM (3.0 điểm)</h2>
                 <div id="mcq-container" class="space-y-6">
                     <!-- JS will render MCQs here -->
                 </div>
@@ -67,15 +84,15 @@
 
             <!-- PHẦN 2: ĐÚNG SAI -->
             <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-orange-500">
-                <h2 class="text-xl font-bold mb-4 text-orange-700">PHẦN II: ĐÚNG / SAI (4 Câu - 4.0 điểm)</h2>
+                <h2 class="text-xl font-bold mb-4 text-orange-700">PHẦN II: ĐÚNG / SAI (4.0 điểm)</h2>
                 <div id="tf-container" class="space-y-8">
                     <!-- JS will render TF here -->
                 </div>
             </div>
 
             <!-- PHẦN 3: ĐIỀN KHUYẾT (KÉO THẢ) -->
-            <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
-                <h2 class="text-xl font-bold mb-4 text-purple-700">PHẦN III: ĐIỀN KHUYẾT (5 Câu - 1.0 điểm)</h2>
+            <div id="part3-section" class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500 hidden-section">
+                <h2 class="text-xl font-bold mb-4 text-purple-700">PHẦN III: ĐIỀN KHUYẾT (1.0 điểm)</h2>
                 <p class="text-sm text-gray-600 mb-2 italic">Click chọn từ khóa rồi click vào ô trống để điền.</p>
                 
                 <div class="bg-purple-50 p-4 rounded-lg mb-6 sticky top-2 z-10 shadow-sm border border-purple-200">
@@ -89,12 +106,12 @@
                 </div>
             </div>
 
-            <!-- PHẦN 4: TRẢ LỜI NGẮN -->
-            <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-red-500">
+            <!-- PHẦN 4: TRẢ LỜI NGẮN (TỰ LUẬN) -->
+            <div id="part4-section" class="bg-white p-6 rounded-lg shadow-md border-t-4 border-red-500">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-bold text-red-700">PHẦN IV: TRẢ LỜI NGẮN (5 Câu - 2.0 điểm)</h2>
+                    <h2 class="text-xl font-bold text-red-700">PHẦN III: TRẢ LỜI NGẮN / TỰ LUẬN (3.0 điểm)</h2>
                     <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded font-bold border border-indigo-200 flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg> AI Chấm tự động (Server-side)
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg> AI Chấm tự động
                     </span>
                 </div>
                 <div id="sa-container" class="space-y-6">
@@ -129,7 +146,8 @@
                     <div class="grid grid-cols-2 gap-2 text-sm mt-2">
                         <div class="bg-white p-2 rounded border border-blue-200">TN: <span id="resP1" class="font-bold text-blue-600"></span></div>
                         <div class="bg-white p-2 rounded border border-orange-200">Đ/S: <span id="resP2" class="font-bold text-orange-600"></span></div>
-                        <div class="bg-white p-2 rounded border border-purple-200">Điền: <span id="resP3" class="font-bold text-purple-600"></span></div>
+                        <!-- Điền khuyết ẩn nếu không có -->
+                        <div id="resP3Box" class="bg-white p-2 rounded border border-purple-200 hidden-section">Điền: <span id="resP3" class="font-bold text-purple-600"></span></div>
                         <div class="bg-white p-2 rounded border border-red-200">Ngắn: <span id="resP4" class="font-bold text-red-600"></span></div>
                     </div>
                 </div>
@@ -143,90 +161,260 @@
 
     <script>
         // --- CẤU HÌNH ---
-        // Link Apps Script bạn đã cung cấp
         const APPS_SCRIPT_URL ='https://script.google.com/macros/s/AKfycbzu2hqYmQxJLE9Wo4MIXR7s1FS3SlDSI1zm5ZSGAI0IPmo5Ta7ebMdy5TMOMq1SuWc8ug/exec'; 
 
-        // --- DỮ LIỆU ĐỀ THI ---
-        const examData = {
-            mcq: [
-                { q: "Cho tập hợp A = {x ∈ N | x ≤ 5}. Tập hợp A là:", options: ["{1;2;3;4;5}", "{0;1;2;3;4;5;6}", "{0;1;2;3;4;5}", "{1;2;3;4;5;6}"], ans: 2 },
-                { q: "Tập xác định của hàm số y = √(x-2) là:", options: ["(2; +∞)", "[2; +∞)", "R \\ {2}", "(-∞; 2]"], ans: 1 },
-                { q: "Parabol y = x² - 4x + 3 có trục đối xứng là:", options: ["x = -2", "x = 4", "x = 2", "x = -4"], ans: 2 },
-                { q: "Cho tam giác ABC có AB=c, AC=b, BC=a. Định lý Cosin tại đỉnh A là:", options: ["a² = b² + c² + 2bc.cosA", "a² = b² + c² - 2bc.cosA", "a² = b² + c² - bc.cosA", "a² = b² - c² + 2bc.cosA"], ans: 1 },
-                { q: "Cho vector a = (2; -3) và vector b = (1; 4). Tọa độ vector u = a + b là:", options: ["(3; 1)", "(1; -7)", "(3; -1)", "(-1; 7)"], ans: 0 },
-                { q: "Số trung bình của mẫu số liệu: 4, 6, 8, 10, 12 là:", options: ["6", "8", "10", "7"], ans: 1 },
-                { q: "Bất phương trình nào sau đây là BPT bậc nhất hai ẩn?", options: ["x² + y > 0", "x + 2y < 3", "xy + 5 ≥ 0", "1/x + y ≤ 1"], ans: 1 },
-                { q: "Giá trị của cos(120°) bằng:", options: ["1/2", "-1/2", "√3/2", "-√3/2"], ans: 1 },
-                { q: "Cho hình bình hành ABCD. Khẳng định nào đúng?", options: ["vectơ AB + AD = AC", "vectơ AB - AD = AC", "vectơ AB + AC = AD", "vectơ CB + CD = CA"], ans: 0 },
-                { q: "Điểm nào sau đây thuộc miền nghiệm của hệ BPT {x - y > 0; x + y < 4}?", options: ["(1; 2)", "(3; 0)", "(0; 0)", "(2; 3)"], ans: 1 },
-                { q: "Tích vô hướng của hai vectơ a và b khác 0 bằng 0 khi nào?", options: ["Hai vectơ cùng phương", "Hai vectơ cùng hướng", "Hai vectơ ngược hướng", "Hai vectơ vuông góc"], ans: 3 },
-                { q: "Quy tròn số 15.6753 đến hàng phần trăm được:", options: ["15.67", "15.68", "15.6", "15.7"], ans: 1 }
-            ],
-            tf: [
-                {
-                    q: "Một gia đình cần ít nhất 900g Protein và 400g Lipid. Thịt bò (80% Pro, 20% Lip, giá 400k/kg). Thịt lợn (60% Pro, 40% Lip, giá 200k/kg).",
-                    subs: [
-                        "Gọi x, y là số kg thịt bò, thịt lợn. Hàm chi phí là F = 400x + 200y.",
-                        "Hệ điều kiện: 0.8x + 0.6y ≥ 0.9 và 0.2x + 0.4y ≥ 0.4 (cùng x,y≥0).",
-                        "Điểm (0.6; 0.7) thuộc miền nghiệm của hệ bất phương trình.",
-                        "Chi phí thấp nhất để đảm bảo dinh dưỡng là 380 nghìn đồng."
-                    ],
-                    ans: [true, true, true, false]
-                },
-                {
-                    q: "Cho hàm số y = ax² + bx + c có đồ thị như hình vẽ (Parabol bề lõm quay lên, cắt Ox tại 1 và 3, đỉnh tại x=2, y=-1).",
-                    subs: [
-                        "Hệ số a < 0.",
-                        "Hàm số đồng biến trên khoảng (2; +∞).",
-                        "Phương trình f(x) = 0 có 2 nghiệm phân biệt.",
-                        "Giá trị nhỏ nhất của hàm số là 1."
-                    ],
-                    ans: [false, true, true, false]
-                },
-                {
-                    q: "Cho tam giác ABC đều cạnh a.",
-                    subs: [
-                        "Độ dài vectơ AB bằng a.",
-                        "Góc giữa vectơ AB và AC là 120 độ.",
-                        "Tích vô hướng AB.AC = a²/2.",
-                        "Độ dài vectơ AB + AC bằng a√3."
-                    ],
-                    ans: [true, false, true, true]
-                },
-                {
-                    q: "Thống kê điểm số: 6, 7, 7, 8, 9, 9, 9, 10, 10 (9 học sinh).",
-                    subs: [
-                        "Mốt của mẫu số liệu là 9.",
-                        "Số trung bình là 8.33 (làm tròn 2 chữ số).",
-                        "Trung vị là 8.",
-                        "Khoảng biến thiên là 4."
-                    ],
-                    ans: [true, true, false, true]
-                }
-            ],
-            wordBank: ["độ lệch chuẩn", "vectơ đối", "trọng tâm", "tù", "cộng", "trừ", "parabol", "vuông góc"],
-            fill: [
-                { text: "Đồ thị của hàm số bậc hai là một đường cong liền nét gọi là [].", ans: "parabol" },
-                { text: "Quy tắc ba điểm: Vectơ AB + Vectơ BC = Vectơ AC là quy tắc [].", ans: "cộng" },
-                { text: "Nếu tam giác ABC có góc A > 90 độ thì góc A gọi là góc [].", ans: "tù" },
-                { text: "Số đặc trưng đo độ phân tán, bằng căn bậc hai của phương sai là [].", ans: "độ lệch chuẩn" },
-                { text: "Điểm G thỏa mãn vectơ GA + GB + GC = 0 được gọi là [] của tam giác.", ans: "trọng tâm" }
-            ],
-            sa: [
-                { q: "Cho mẫu số liệu: 10, 12, 14, 16, 18. Tìm trung vị của mẫu.", ans: "14" },
-                { q: "Tam giác ABC có a=5, c=8, góc B=60 độ. Tính độ dài cạnh b.", ans: "7" },
-                { q: "Một vật chịu hai lực vuông góc F1=3N, F2=4N. Hợp lực có độ lớn bao nhiêu N?", ans: "5" },
-                { q: "Parabol y = x² - 2x - 3 cắt trục tung tại điểm có tung độ bằng bao nhiêu?", ans: "-3" },
-                { q: "Cho hình vuông ABCD cạnh 2. Tính tích vô hướng vectơ AB nhân vectơ AC.", ans: "4" }
-            ]
-        };
+        // --- DỮ LIỆU 5 ĐỀ THI ---
+        const exams = [
+            // ĐỀ 1
+            {
+                id: "DE1",
+                name: "Đề 1 (Cơ bản)",
+                mcq: [
+                    { q: "Cho hai tập hợp A = [-1; 3] và B = [0; 5]. Khi đó A ∩ B là:", options: ["[-1; 5]", "[0; 3]", "(-1; 5)", "(0; 3)"], ans: 1 },
+                    { q: "Đồ thị của hàm số y = x + 3 đi qua điểm:", options: ["(0; 0)", "(1; 0)", "(0; 3)", "(3; 0)"], ans: 2 },
+                    { q: "Trục đối xứng của parabol y = 2x² + 4x - 1 là:", options: ["x = 1", "x = -1", "x = 2", "x = -2"], ans: 1 },
+                    { q: "Tọa độ đỉnh I của parabol y = x² - 2x + 3 là:", options: ["(1; 2)", "(-1; 6)", "(2; 3)", "(0; 3)"], ans: 0 },
+                    { q: "Hàm số nào sau đây có đồ thị hướng bề lõm xuống dưới?", options: ["y = x² - 2x", "y = -x² + 4x + 1", "y = 2x² + 1", "y = x² + x + 1"], ans: 1 },
+                    { q: "Cho hình vuông ABCD. Khẳng định nào đúng?", options: ["AB = BC", "Vectơ AB = Vectơ BC", "Vectơ AB = Vectơ DC", "Vectơ AC = Vectơ BD"], ans: 2 },
+                    { q: "Cho ba điểm phân biệt A, B, C. Đẳng thức vectơ nào đúng?", options: ["AB + BC = AC", "AB - AC = BC", "AB + AC = BC", "CA + CB = AB"], ans: 0 },
+                    { q: "Tam giác ABC vuông tại A, M là trung điểm BC. Khẳng định đúng?", options: ["AM = BC/2", "AM = BC", "AM = AB", "AM = AC"], ans: 0 },
+                    { q: "Hình vuông ABCD cạnh 2. Độ dài vectơ AB + AD bằng:", options: ["2", "2√2", "4", "√2"], ans: 1 },
+                    { q: "Hai vectơ a và b cùng hướng và khác 0. Tích vô hướng a.b là:", options: ["|a|.|b|", "-|a|.|b|", "0", "1"], ans: 0 },
+                    { q: "Cho mẫu số liệu {1, 2, 3, 3, 4}. Mốt là:", options: ["1", "2", "3", "4"], ans: 2 },
+                    { q: "Mẫu số liệu {1, 3, 5, 7, 9}. Trung vị là:", options: ["3", "5", "7", "4"], ans: 1 }
+                ],
+                tf: [
+                    {
+                        q: "Cho hàm số y = x² - 4x. Xét tính đúng sai:",
+                        subs: ["Tập xác định D = R.", "Đỉnh parabol là I(2; -4).", "Giá trị lớn nhất của hàm số là -4.", "Bề lõm quay xuống."],
+                        ans: [true, true, false, false]
+                    },
+                    {
+                        q: "Cho hình bình hành ABCD tâm O.",
+                        subs: ["Vectơ OA + OC = 0.", "Vectơ AB = CD.", "Vectơ AB + AD = AC.", "Vectơ AO = BO."],
+                        ans: [true, false, true, false]
+                    },
+                    {
+                        q: "Hình vuông ABCD tâm O cạnh a.",
+                        subs: ["Độ dài vectơ AB bằng a.", "AB vuông góc AD.", "AC = a√2.", "Tích vô hướng AB.AD = a²."],
+                        ans: [true, true, true, false]
+                    },
+                    {
+                        q: "Mẫu số liệu: 12, 37, 64, 13, 26, 43, 29, 26.",
+                        subs: ["Khoảng biến thiên là 52.", "Số trung bình xấp xỉ 31.25.", "Tứ phân vị Q1 = 13.", "Tứ phân vị Q3 = 43."],
+                        ans: [true, true, false, true]
+                    }
+                ],
+                fill: [], // Đề này không có phần điền khuyết
+                sa: [
+                    { q: "Cổng Arch (Parabol). Khoảng cách 2 chân 162m. Tại độ cao 43m thì cách chân 10m. Tính chiều cao cổng (m).", ans: "185.6" },
+                    { q: "Hai lực F1=400N, F2=600N, góc 60 độ. Tính độ lớn hợp lực (N, làm tròn hàng đơn vị).", ans: "872" },
+                    { q: "So sánh trung vị số đơn vị hành chính ĐNB (8.5) và ĐBSCL (9). Khu vực nào lớn hơn?", ans: "ĐBSCL" }
+                ]
+            },
+            // ĐỀ 2
+            {
+                id: "DE2",
+                name: "Đề 2 (Tổng hợp)",
+                mcq: [
+                    { q: "A = [-1; 2), B = (0; 4]. A giao B là:", options: ["(0; 2)", "[-1; 4]", "(0; 2]", "[-1; 0)"], ans: 0 },
+                    { q: "Parabol y = ax² + bx + c đi qua A(2; 3). Thay toạ độ vào ta được:", options: ["3 = 4a + 2b + c", "2 = 9a + 3b + c", "3 = 2a + b + c", "3 = a + b + c"], ans: 0 },
+                    { q: "Hàm số y = x - 2 đồng biến trên:", options: ["R", "(2; +vô cùng)", "(-vô cùng; 2)", "Vô nghiệm"], ans: 0 },
+                    { q: "Đỉnh của y = -x² + 2x + 1 là:", options: ["(1; 2)", "(-1; -2)", "(1; 0)", "(0; 1)"], ans: 0 },
+                    { q: "Đồ thị hàm số y = ax² + bx + c có đỉnh I(1; -2). Trục đối xứng là:", options: ["x = 1", "y = -2", "x = -1", "y = 2"], ans: 0 },
+                    { q: "Tứ giác ABCD. Có bao nhiêu vectơ khác 0 từ các đỉnh?", options: ["4", "8", "12", "16"], ans: 2 },
+                    { q: "Ba điểm A, B, C. Khẳng định đúng?", options: ["AB + BC = AC", "AB - BC = AC", "AB = BC", "AC + CB = BA"], ans: 0 },
+                    { q: "Hình vuông ABCD tâm O. Khẳng định SAI?", options: ["OA = OB", "Vectơ OA = Vectơ OB", "AC vuông góc BD", "AB = BC"], ans: 1 },
+                    { q: "Hình bình hành ABCD. M là giao 2 đường chéo. SAI?", options: ["MA + MC = 0", "MA = MC", "AB = DC", "AD = BC"], ans: 1 },
+                    { q: "Hai vectơ a, b ngược hướng. Góc giữa chúng là:", options: ["0 độ", "90 độ", "180 độ", "45 độ"], ans: 2 },
+                    { q: "Mẫu số liệu: 5, 13, 5, 7, 10, 2, 3. Trung vị là:", options: ["5", "7", "3", "13"], ans: 0 },
+                    { q: "Mẫu: 10, 6, 8, 7, 9, 9, 8, 7, 8, 8. Độ lệch chuẩn xấp xỉ:", options: ["1.1", "1.5", "2.0", "0.5"], ans: 0 }
+                ],
+                tf: [
+                    {
+                        q: "Cho đồ thị y = x² - 4x + 3. Xét tính đúng sai:",
+                        subs: ["Tọa độ đỉnh I(2; -1).", "Trục đối xứng x = 2.", "Bề lõm hướng lên.", "Cắt Oy tại (0; 3)."],
+                        ans: [true, true, true, true]
+                    },
+                    {
+                        q: "Ba điểm A, B, C phân biệt.",
+                        subs: ["Vectơ AB + BC = AC.", "Vectơ AB - AC = CB.", "Vectơ AB + AC = BC.", "Vectơ BA = -Vectơ AB."],
+                        ans: [true, true, false, true]
+                    },
+                    {
+                        q: "Tam giác ABC đều cạnh a, trọng tâm G.",
+                        subs: ["AG = 2/3 đường cao.", "Vectơ GA + GB + GC = 0.", "AB = a.", "Góc A = 90 độ."],
+                        ans: [true, true, true, false]
+                    },
+                    {
+                        q: "Điểm số 12 HS: 10, 25, 30, 45, 50, 60, 65, 70, 75, 80, 85, 90.",
+                        subs: ["Số liệu đã sắp xếp.", "Trung vị là 62.5.", "Q1 = 37.5.", "Q3 = 77.5."],
+                        ans: [true, true, true, true]
+                    }
+                ],
+                fill: [],
+                sa: [
+                    { q: "Cổng Parabol cao 4m, cửa chính cao 3m rộng 4m. Tính khoảng cách 2 chân cổng (m).", ans: "8" },
+                    { q: "Vận tốc dòng nước 10km/h (Bắc-Nam), ca nô 35km/h (Đông-Tây). Vận tốc so với bờ? (km/h, làm tròn hàng đơn vị)", ans: "36" },
+                    { q: "Trung vị cuộc gọi: Dũng (3.5) và Thu (2). Ai gọi nhiều hơn?", ans: "Dũng" }
+                ]
+            },
+            // ĐỀ 3
+            {
+                id: "DE3",
+                name: "Đề 3 (Hà Nội)",
+                mcq: [
+                    { q: "Tập hợp A = {x thuộc R | x² + x + 1 = 0}. A là:", options: ["R", "{0}", "Rỗng", "{1}"], ans: 2 },
+                    { q: "Hàm số y = x². Khẳng định đúng:", options: ["Đồng biến trên R", "Nghịch biến (-vô cùng; 0)", "Nghịch biến trên R", "Đồng biến (-vô cùng; 0)"], ans: 1 },
+                    { q: "Hàm số y = 2x + 1 đồng biến trên:", options: ["R", "(0; 1)", "(-1; 0)", "Vô nghiệm"], ans: 0 },
+                    { q: "Đỉnh của parabol y = -x² + 4x là:", options: ["(2; 4)", "(-2; -12)", "(0; 0)", "(4; 0)"], ans: 0 },
+                    { q: "Đồ thị y = ax² (a>0) có dạng:", options: ["Đường thẳng", "Parabol lõm lên", "Parabol lõm xuống", "Hình tròn"], ans: 1 },
+                    { q: "Giao điểm 2 đường chéo hbh ABCD là O. Sai?", options: ["OA = OC", "Vectơ OA + OC = 0", "Vectơ OB = OD", "OB = OD"], ans: 2 },
+                    { q: "Vectơ có điểm đầu A, điểm cuối B kí hiệu:", options: ["AB", "Vectơ AB", "|AB|", "BA"], ans: 1 },
+                    { q: "I là trung điểm AB. Đúng?", options: ["IA = IB", "Vectơ IA = Vectơ IB", "Vectơ IA + IB = 0", "IA + IB = 0"], ans: 2 },
+                    { q: "Hai vectơ a, b cùng hướng, khác 0. Góc giữa chúng:", options: ["0 độ", "90 độ", "180 độ", "Không xác định"], ans: 0 },
+                    { q: "Tam giác đều cạnh a, đường cao AH. Tích vô hướng AC.CB?", options: ["-a²/2", "a²/2", "0", "a²"], ans: 0 },
+                    { q: "Mẫu: 1, 1, 3, 6, 7, 8, 8, 8, 10. Mốt là:", options: ["1", "8", "7", "10"], ans: 1 },
+                    { q: "Mẫu: 5, 8, 9, 1, 7, 3, 4. Trung vị là:", options: ["5", "7", "4", "3"], ans: 0 }
+                ],
+                tf: [
+                    {
+                        q: "Cho Parabol y = x² - 4x + 2.",
+                        subs: ["Trục đối xứng x = 2.", "Đỉnh I(2; -2).", "GTNN là -2.", "Đi qua gốc tọa độ."],
+                        ans: [true, true, true, false]
+                    },
+                    {
+                        q: "Hình bình hành ABCD tâm O.",
+                        subs: ["Vectơ AB + AD = AC.", "Vectơ OA = OC.", "Vectơ AB = DC.", "AO = OC."],
+                        ans: [true, false, true, true]
+                    },
+                    {
+                        q: "Hình thoi ABCD cạnh 2, góc A = 60 độ.",
+                        subs: ["Tam giác ABD đều.", "AC = 2√3.", "BD = 2.", "Vectơ AB.AD = 2."],
+                        ans: [true, false, true, true]
+                    },
+                    {
+                        q: "Mẫu số liệu: 1, 2, 3, 4, 5.",
+                        subs: ["Trung bình = 3.", "Trung vị = 3.", "Q1 = 1.5.", "Khoảng tứ phân vị = 3."],
+                        ans: [true, true, true, true]
+                    }
+                ],
+                fill: [],
+                sa: [
+                    { q: "Cổng parabol chân cách 4m. Điểm M trên cổng cao 6m cách chân 0.5m. Tính chiều cao cổng (m, làm tròn 1 số lẻ).", ans: "13.7" },
+                    { q: "Ba lực cùng tác động vật đứng yên. F1=F2=100N, góc 60 độ. Tính cường độ F3 (N, làm tròn 1 số lẻ).", ans: "173.2" },
+                    { q: "Sản lượng lúa: 20(5), 21(8), 22(11), 23(10), 24(6). Tính phương sai (làm tròn 2 số lẻ).", ans: "1.56" }
+                ]
+            },
+            // ĐỀ 4
+            {
+                id: "DE4",
+                name: "Đề 4 (Thử sức)",
+                mcq: [
+                    { q: "A = (-vc; 3], B = (1; 5]. A hợp B là:", options: ["(1; 3]", "(-vc; 5]", "R", "(3; 5]"], ans: 1 },
+                    { q: "Hàm số đồ thị đi xuống từ trái qua phải là:", options: ["Đồng biến", "Nghịch biến", "Hằng số", "Không xác định"], ans: 1 },
+                    { q: "Trục đối xứng của y = x² - 4x + 3:", options: ["x = 2", "x = -2", "x = 4", "x = 0"], ans: 0 },
+                    { q: "Hàm y = x² - 2x. Nghịch biến trên:", options: ["(1; +vc)", "(-vc; 1)", "(0; 2)", "R"], ans: 1 },
+                    { q: "Parabol y = ax² bề lõm lên khi:", options: ["a > 0", "a < 0", "a = 0", "a != 0"], ans: 0 },
+                    { q: "Vectơ MN có điểm đầu là:", options: ["N", "M", "MN", "Không có"], ans: 1 },
+                    { q: "M, N, P phân biệt. MN + NP = ?", options: ["MP", "PM", "NM", "PN"], ans: 0 },
+                    { q: "I trung điểm AB. Vectơ IA + IB = ?", options: ["AB", "0", "2IA", "2IB"], ans: 1 },
+                    { q: "Hình vuông ABCD cạnh a. Độ dài AC?", options: ["a", "a√2", "2a", "a/2"], ans: 1 },
+                    { q: "Hai vectơ a, b khác 0 cùng hướng. Góc (a,b) = ?", options: ["0", "90", "180", "60"], ans: 0 },
+                    { q: "Mẫu: 2, 5, 2, 8, 5, 2. Mốt là:", options: ["2", "5", "8", "6"], ans: 0 },
+                    { q: "Mẫu: 1, 3, 10. Khoảng biến thiên:", options: ["9", "7", "3", "1"], ans: 0 }
+                ],
+                tf: [
+                    {
+                        q: "Hàm số y = -x² + 2x.",
+                        subs: ["Trục đối xứng x = 1.", "Đỉnh I(1; 1).", "GTLN tại x = 1.", "Bề lõm quay lên."],
+                        ans: [true, true, true, false]
+                    },
+                    {
+                        q: "Hình bình hành ABCD tâm O.",
+                        subs: ["OA = OC.", "Vectơ OA = Vectơ OC.", "AB = CD.", "Vectơ AB = Vectơ DC."],
+                        ans: [true, false, true, true]
+                    },
+                    {
+                        q: "Hình vuông ABCD tâm O cạnh 2.",
+                        subs: ["AC vuông góc BD.", "AC = 2.", "Vectơ OA + OB + OC + OD = 0.", "AB = 2."],
+                        ans: [true, false, true, true]
+                    },
+                    {
+                        q: "Sản lượng chè: 112, 111, 112, 113, 114, 116, 115, 114, 115, 114.",
+                        subs: ["Mốt là 114.", "Trung bình là 113.6.", "Trung vị là 114.", "Khoảng tứ phân vị là 2."],
+                        ans: [true, true, true, false]
+                    }
+                ],
+                fill: [],
+                sa: [
+                    { q: "Cổng Parabol chân 162m, điểm M(10; 43). Tính chiều cao cổng (m).", ans: "185.6" },
+                    { q: "Hai lực vuông góc 300N và 400N. Hợp lực (N)?", ans: "500" },
+                    { q: "An học lớp 9 độ lệch chuẩn 0.5, lớp 10 là 1.2. Năm nào học đều hơn?", ans: "Lớp 9" }
+                ]
+            },
+            // ĐỀ 5
+            {
+                id: "DE5",
+                name: "Đề 5 (Trắc nghiệm)",
+                mcq: [
+                    { q: "A=[-2; 1], B=(0; 3). A giao B:", options: ["(0; 1]", "[-2; 3)", "[-2; 0]", "[1; 3)"], ans: 0 },
+                    { q: "Đồ thị y = -x + 3 đi qua:", options: ["(0; 3)", "(3; 3)", "(1; 1)", "(-1; 2)"], ans: 0 },
+                    { q: "Trục đối xứng y = 2x² + 4x:", options: ["x = -1", "x = 1", "x = -2", "x = 0"], ans: 0 },
+                    { q: "Đỉnh I của y = x² - 2x + 1:", options: ["(1; 0)", "(0; 1)", "(-1; 4)", "(1; 1)"], ans: 0 },
+                    { q: "Hàm y = x² đồng biến trên:", options: ["(0; +vc)", "(-vc; 0)", "R", "(-1; 1)"], ans: 0 },
+                    { q: "Tam giác ABC đều. Sai?", options: ["AB = AC", "Góc A = 60", "Vectơ AB = Vectơ AC", "BC = a"], ans: 2 },
+                    { q: "Hai vectơ bằng nhau khi:", options: ["Cùng hướng & cùng độ dài", "Cùng phương & cùng độ dài", "Cùng độ dài", "Giá trùng nhau"], ans: 0 },
+                    { q: "I trung điểm AB. Sai?", options: ["IA = IB", "Vectơ IA = -Vectơ IB", "Vectơ IA = Vectơ IB", "Vectơ IA + IB = 0"], ans: 2 },
+                    { q: "Vectơ a, b khác 0. Vectơ a bình phương bằng:", options: ["|a|²", "a", "0", "2|a|"], ans: 0 },
+                    { q: "Tam giác đều cạnh a. Tích AB.AC?", options: ["a²/2", "a²", "0", "-a²/2"], ans: 0 },
+                    { q: "Điểm: 5, 6, 7, 8, 9 (tổ 5 HS). Trung bình:", options: ["7", "6", "8", "5"], ans: 0 },
+                    { q: "Giá túi: 300, 350, 300, 400, 350. Trung vị:", options: ["350", "300", "400", "325"], ans: 0 }
+                ],
+                tf: [
+                    {
+                        q: "Hàm số y = x² + 2x - 3.",
+                        subs: ["Đỉnh I(-1; -4).", "Trục đối xứng x = -1.", "Giao Oy tại (0; -3).", "Giao Ox tại (-1; 0)."],
+                        ans: [true, true, true, false]
+                    },
+                    {
+                        q: "Tam giác ABC, M, N trung điểm AB, AC.",
+                        subs: ["Vectơ MN = 1/2 Vectơ BC.", "Điểm D đối xứng M qua N thì AD = AM.", "MN và BC cùng hướng.", "Vectơ NM = Vectơ CB."],
+                        ans: [true, false, true, false]
+                    },
+                    {
+                        q: "Hình chữ nhật ABCD, O giao điểm.",
+                        subs: ["Vectơ OA = OC.", "Vectơ OA + OB + OC + OD = 0.", "AC = BD.", "Vectơ AD = CB."],
+                        ans: [false, true, true, false]
+                    },
+                    {
+                        q: "Giờ học: 2, 2, 1, 3... (30 HS).",
+                        subs: ["Max = 8.", "Trung bình = 5.1.", "Trung vị = 6.", "Q1 = 4."],
+                        ans: [true, false, true, true]
+                    }
+                ],
+                fill: [],
+                sa: [
+                    { q: "Bóng ném lên: h = -5t² + 20t. Chiều cao lớn nhất (m)?", ans: "20" },
+                    { q: "Ba lực F1=F2=10N, góc 60 độ. Vật đứng yên. Tìm cường độ F3 (N, làm tròn 1 số lẻ).", ans: "17.3" },
+                    { q: "So sánh trung bình cuộc gọi: Dũng (3.4) và Thu (3.9). Ai gọi nhiều hơn?", ans: "Thu" }
+                ]
+            }
+        ];
 
         // --- STATE & RENDER LOGIC ---
+        let currentExamIndex = 0;
         let selectedWord = null;
 
         function renderExam() {
+            const examData = exams[currentExamIndex];
+            
+            // Render tiêu đề
+            // document.getElementById("appTitle").innerText = examData.name;
+
             // 1. MCQ
             const mcqContainer = document.getElementById("mcq-container");
+            mcqContainer.innerHTML = ""; // Xóa cũ
             examData.mcq.forEach((item, idx) => {
                 const div = document.createElement("div");
                 div.className = "p-4 border border-blue-100 rounded bg-blue-50 hover:shadow-sm";
@@ -246,6 +434,7 @@
 
             // 2. TF
             const tfContainer = document.getElementById("tf-container");
+            tfContainer.innerHTML = "";
             examData.tf.forEach((item, idx) => {
                 const div = document.createElement("div");
                 div.className = "p-4 border border-orange-100 rounded bg-orange-50 hover:shadow-sm";
@@ -275,59 +464,37 @@
                 tfContainer.appendChild(div);
             });
 
-            // 3. FILL
-            const wordBank = document.getElementById("word-bank");
-            examData.wordBank.forEach(word => {
-                const span = document.createElement("span");
-                span.className = "drag-source bg-white border border-purple-300 text-purple-700 px-3 py-1 rounded shadow-sm text-sm font-medium hover:bg-purple-100";
-                span.innerText = word;
-                span.onclick = () => selectWord(span, word);
-                wordBank.appendChild(span);
-            });
-
-            const fillContainer = document.getElementById("fill-container");
-            examData.fill.forEach((item, idx) => {
-                const div = document.createElement("div");
-                div.className = "p-3 border-b border-purple-100 last:border-0";
-                const html = item.text.replace("[]", `<span class="drop-target border-purple-300 text-purple-800" id="fill_${idx}" onclick="dropWord(this)">...</span>`);
-                div.innerHTML = `<span class="font-bold text-purple-800 mr-2">${idx + 1}.</span> ${html}`;
-                fillContainer.appendChild(div);
-            });
+            // 3. FILL (Ẩn nếu không có dữ liệu)
+            const part3Section = document.getElementById("part3-section");
+            if (examData.fill && examData.fill.length > 0) {
+                part3Section.classList.remove("hidden-section");
+                const wordBank = document.getElementById("word-bank");
+                wordBank.innerHTML = "";
+                // Giả sử wordBank nằm trong examData hoặc lấy từ đáp án (Logic đơn giản hóa ở đây)
+                // Vì file không có wordBank, ta bỏ qua hoặc tạo dummy nếu cần. 
+                // Ở code này ta ẩn đi.
+            } else {
+                part3Section.classList.add("hidden-section");
+            }
 
             // 4. SA
             const saContainer = document.getElementById("sa-container");
+            saContainer.innerHTML = "";
             examData.sa.forEach((item, idx) => {
                 const div = document.createElement("div");
                 div.className = "p-4 border border-red-200 rounded bg-red-50";
                 div.innerHTML = `
                     <p class="font-semibold text-gray-800 mb-2">Câu ${idx + 1}: ${item.q}</p>
-                    <input type="text" id="sa_${idx}" class="w-full p-2 border border-red-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500 bg-white" placeholder="Nhập kết quả số (Ví dụ: 5, 2a, căn 3...)">
+                    <input type="text" id="sa_${idx}" class="w-full p-2 border border-red-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500 bg-white" placeholder="Nhập câu trả lời...">
                 `;
                 saContainer.appendChild(div);
             });
         }
 
-        // Logic Kéo Thả
-        function selectWord(el, word) {
-            document.querySelectorAll('.drag-source').forEach(e => e.classList.remove('selected'));
-            if (selectedWord === word) {
-                selectedWord = null;
-            } else {
-                selectedWord = word;
-                el.classList.add('selected');
-            }
-        }
-
-        function dropWord(el) {
-            if (selectedWord) {
-                el.innerText = selectedWord;
-                el.classList.add('filled');
-                selectedWord = null;
-                document.querySelectorAll('.drag-source').forEach(e => e.classList.remove('selected'));
-            } else {
-                el.innerText = "...";
-                el.classList.remove('filled');
-            }
+        function changeExam() {
+            const selector = document.getElementById("examSelect");
+            currentExamIndex = parseInt(selector.value);
+            renderExam();
         }
 
         // --- HÀM GỌI APPS SCRIPT ĐỂ CHẤM ĐIỂM (PROXY) ---
@@ -346,9 +513,7 @@
                 // Gửi request POST đến Apps Script
                 const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
-                    // Quan trọng: Để đọc được phản hồi từ Apps Script, ta không dùng 'no-cors' cho chức năng chấm điểm vì cần đọc response
-                    // Tuy nhiên, nếu gặp lỗi CORS thì Apps Script phải được deploy với quyền 'Anyone'.
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // Dùng text/plain để tránh preflight request
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(payload)
                 });
                 
@@ -367,6 +532,7 @@
 
         // Chấm điểm & Gửi
         async function submitExam() {
+            const examData = exams[currentExamIndex]; // Lấy đề hiện tại
             const studentName = document.getElementById("studentName").value.trim();
             const groupName = document.getElementById("groupName").value.trim();
 
@@ -384,7 +550,7 @@
             const answerLog = []; 
             const headersLog = []; 
 
-            // 1. Chấm MCQ
+            // 1. Chấm MCQ (3 điểm / 12 câu = 0.25đ/câu)
             examData.mcq.forEach((item, idx) => {
                 const selected = document.querySelector(`input[name="mcq_${idx}"]:checked`);
                 let ansStr = "X";
@@ -397,7 +563,7 @@
                 headersLog.push(`Câu TN ${idx + 1}`);
             });
 
-            // 2. Chấm TF
+            // 2. Chấm TF (4 điểm / 4 câu = 1.0đ/câu, mỗi ý 0.25)
             examData.tf.forEach((item, idx) => {
                 item.subs.forEach((sub, i) => {
                     const selected = document.querySelector(`input[name="tf_${idx}_${i}"]:checked`);
@@ -413,20 +579,25 @@
                 });
             });
 
-            // 3. Chấm Fill 
-            examData.fill.forEach((item, idx) => {
-                const el = document.getElementById(`fill_${idx}`);
-                const userText = el.innerText.trim();
-                if (userText === "...") {
-                     answerLog.push("X");
-                } else {
-                     answerLog.push(userText);
-                     if (userText.toLowerCase() === item.ans.toLowerCase()) p3 += 0.2;
-                }
-                headersLog.push(`Câu Điền ${idx + 1}`);
-            });
+            // 3. Chấm Fill (Bỏ qua nếu không có)
+            if (examData.fill && examData.fill.length > 0) {
+                 examData.fill.forEach((item, idx) => {
+                    const el = document.getElementById(`fill_${idx}`);
+                    const userText = el ? el.innerText.trim() : "...";
+                    if (userText === "...") {
+                         answerLog.push("X");
+                    } else {
+                         answerLog.push(userText);
+                         if (userText.toLowerCase() === item.ans.toLowerCase()) p3 += 0.2;
+                    }
+                    headersLog.push(`Câu Điền ${idx + 1}`);
+                });
+            }
 
-            // 4. Chấm SA (Trả lời ngắn) - GỌI SERVER PROXY
+            // 4. Chấm SA (3 điểm / số câu)
+            // Điểm mỗi câu SA thay đổi tùy số lượng câu, giả sử chia đều 3.0 điểm
+            const saScorePerQ = examData.sa.length > 0 ? (3.0 / examData.sa.length) : 0;
+            
             const saUserAnswers = [];
             examData.sa.forEach((item, idx) => {
                 const val = document.getElementById(`sa_${idx}`).value.trim();
@@ -437,61 +608,66 @@
             // Gọi hàm chấm điểm qua Server
             const aiResults = await gradeWithServerProxy(examData.sa, saUserAnswers);
 
-            // Tính điểm SA dựa trên kết quả trả về từ Server (hoặc fallback nếu lỗi)
+            // Tính điểm SA
             examData.sa.forEach((item, idx) => {
                 const userVal = saUserAnswers[idx];
                 let isCorrect = false;
 
                 if (aiResults) {
-                    // Dùng kết quả AI từ server
                     const aiGrade = aiResults.find(r => r.index === idx);
                     if (aiGrade && aiGrade.isCorrect) isCorrect = true;
                 } else {
-                    // Fallback: So khớp chuỗi nếu server lỗi
-                    if (userVal && userVal.toLowerCase() === item.ans.toLowerCase()) isCorrect = true;
+                    // Fallback cơ bản: Chứa từ khóa chính
+                    if (userVal && item.ans && userVal.toLowerCase().includes(item.ans.toLowerCase())) isCorrect = true;
                 }
 
-                if (isCorrect) p4 += 0.4;
+                if (isCorrect) p4 += saScorePerQ;
                 answerLog.push(userVal || "X"); 
             });
 
             const score = Math.round((p1 + p2 + p3 + p4) * 100) / 100;
             
             // Thông tin tổng điểm
-            const appTitle = document.getElementById('appTitle').innerText;
-            const summaryScores = [`${score}/10`, `${p1}/3.0`, `${p2}/4.0`, `${p3}/1.0`, `${p4}/2.0`];
+            const examName = examData.name;
+            const summaryScores = [`${score}/10`, `${p1}/3.0`, `${p2}/4.0`, `${p3}/0.0`, `${p4}/3.0`];
             const summaryHeaders = ["Tổng Điểm", "Điểm TN", "Điểm ĐS", "Điểm Điền", "Điểm Ngắn"];
 
             // Payload gửi đi để LƯU KẾT QUẢ
             const payload = {
-                action: "save_score", // Cờ báo hiệu lưu điểm
-                role: appTitle, 
+                action: "save_score", 
+                role: examName, // Lưu tên đề thi vào cột Role/Chức vụ
                 evaluator: studentName,
                 groupName: groupName,
-                week: "DE_MOI_CTST",
+                week: "ON_TAP_HK1",
                 headers: summaryHeaders.concat(headersLog), 
                 scores: summaryScores.concat(answerLog)     
             };
 
             try {
-                // Gửi request lần 2 để lưu kết quả
                 document.getElementById("loading-text").innerText = "Đang lưu kết quả...";
                 await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // Dùng no-cors cho thao tác lưu để đảm bảo thành công cao nhất
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // Sửa thành text/plain cho no-cors
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(payload)
                 });
 
                 // Hiển thị kết quả
                 document.getElementById("loading").style.display = "none";
-                document.getElementById("resName").innerText = studentName + " (" + groupName + ")";
+                document.getElementById("resName").innerText = studentName + " - " + groupName;
                 document.getElementById("resTotal").innerText = score + " / 10";
                 
                 document.getElementById("resP1").innerText = `${p1}/3.0`;
                 document.getElementById("resP2").innerText = `${p2}/4.0`;
-                document.getElementById("resP3").innerText = `${p3}/1.0`;
-                document.getElementById("resP4").innerText = `${p4}/2.0`;
+                document.getElementById("resP3").innerText = examData.fill && examData.fill.length > 0 ? `${p3}` : "0 (Không có)";
+                document.getElementById("resP4").innerText = `${Math.round(p4*100)/100}/3.0`;
+
+                // Ẩn hiện box điểm điền khuyết
+                if (!examData.fill || examData.fill.length === 0) {
+                     document.getElementById("resP3Box").classList.add("hidden-section");
+                } else {
+                     document.getElementById("resP3Box").classList.remove("hidden-section");
+                }
 
                 document.getElementById("resultModal").classList.remove("hidden");
                 document.getElementById("resultModal").classList.add("flex");
