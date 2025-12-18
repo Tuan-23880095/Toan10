@@ -22,6 +22,21 @@
         
         /* Ẩn hiện section */
         .hidden-section { display: none !important; }
+
+        /* Style cho lời nhận xét AI */
+        .ai-comment-box {
+            background: linear-gradient(to right, #e0f2fe, #f0f9ff);
+            border-left: 4px solid #0284c7;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 4px;
+            font-style: italic;
+            color: #0369a1;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+        }
+        .ai-icon { font-size: 1.2rem; margin-right: 8px; }
     </style>
 </head>
 <body>
@@ -150,6 +165,13 @@
                         <div id="resP3Box" class="bg-white p-2 rounded border border-purple-200 hidden-section">Điền: <span id="resP3" class="font-bold text-purple-600"></span></div>
                         <div class="bg-white p-2 rounded border border-red-200">Ngắn: <span id="resP4" class="font-bold text-red-600"></span></div>
                     </div>
+                    
+                    <!-- MỚI: HỘP THOẠI NHẬN XÉT CỦA AI -->
+                    <div id="aiCommentBox" class="ai-comment-box hidden-section">
+                        <span class="ai-icon">🤖</span>
+                        <span id="aiCommentText">Đang tải nhận xét...</span>
+                    </div>
+
                 </div>
                 
                 <div class="mt-6">
@@ -470,9 +492,6 @@
                 part3Section.classList.remove("hidden-section");
                 const wordBank = document.getElementById("word-bank");
                 wordBank.innerHTML = "";
-                // Giả sử wordBank nằm trong examData hoặc lấy từ đáp án (Logic đơn giản hóa ở đây)
-                // Vì file không có wordBank, ta bỏ qua hoặc tạo dummy nếu cần. 
-                // Ở code này ta ẩn đi.
             } else {
                 part3Section.classList.add("hidden-section");
             }
@@ -499,18 +518,16 @@
 
         // --- HÀM GỌI APPS SCRIPT ĐỂ CHẤM ĐIỂM (PROXY) ---
         async function gradeWithServerProxy(saData, userAnswers) {
-            // Xây dựng chuỗi câu hỏi để gửi lên server
             const itemsToGrade = saData.map((item, idx) => {
                 return `Câu ${idx+1}: "${item.q}". Đáp án đúng: "${item.ans}". Học sinh trả lời: "${userAnswers[idx]}".`;
             }).join("\n");
 
             const payload = {
-                action: "grade_ai", // Cờ báo hiệu cho Apps Script biết đây là yêu cầu chấm điểm
+                action: "grade_ai", 
                 items: itemsToGrade
             };
 
             try {
-                // Gửi request POST đến Apps Script
                 const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -532,7 +549,7 @@
 
         // Chấm điểm & Gửi
         async function submitExam() {
-            const examData = exams[currentExamIndex]; // Lấy đề hiện tại
+            const examData = exams[currentExamIndex]; 
             const studentName = document.getElementById("studentName").value.trim();
             const groupName = document.getElementById("groupName").value.trim();
 
@@ -550,7 +567,7 @@
             const answerLog = []; 
             const headersLog = []; 
 
-            // 1. Chấm MCQ (3 điểm / 12 câu = 0.25đ/câu)
+            // 1. Chấm MCQ
             examData.mcq.forEach((item, idx) => {
                 const selected = document.querySelector(`input[name="mcq_${idx}"]:checked`);
                 let ansStr = "X";
@@ -563,7 +580,7 @@
                 headersLog.push(`Câu TN ${idx + 1}`);
             });
 
-            // 2. Chấm TF (4 điểm / 4 câu = 1.0đ/câu, mỗi ý 0.25)
+            // 2. Chấm TF 
             examData.tf.forEach((item, idx) => {
                 item.subs.forEach((sub, i) => {
                     const selected = document.querySelector(`input[name="tf_${idx}_${i}"]:checked`);
@@ -579,7 +596,7 @@
                 });
             });
 
-            // 3. Chấm Fill (Bỏ qua nếu không có)
+            // 3. Chấm Fill 
             if (examData.fill && examData.fill.length > 0) {
                  examData.fill.forEach((item, idx) => {
                     const el = document.getElementById(`fill_${idx}`);
@@ -594,10 +611,8 @@
                 });
             }
 
-            // 4. Chấm SA (3 điểm / số câu)
-            // Điểm mỗi câu SA thay đổi tùy số lượng câu, giả sử chia đều 3.0 điểm
+            // 4. Chấm SA
             const saScorePerQ = examData.sa.length > 0 ? (3.0 / examData.sa.length) : 0;
-            
             const saUserAnswers = [];
             examData.sa.forEach((item, idx) => {
                 const val = document.getElementById(`sa_${idx}`).value.trim();
@@ -605,10 +620,9 @@
                 headersLog.push(`Câu Ngắn ${idx + 1}`);
             });
 
-            // Gọi hàm chấm điểm qua Server
+            // Gọi chấm điểm
             const aiResults = await gradeWithServerProxy(examData.sa, saUserAnswers);
 
-            // Tính điểm SA
             examData.sa.forEach((item, idx) => {
                 const userVal = saUserAnswers[idx];
                 let isCorrect = false;
@@ -617,7 +631,6 @@
                     const aiGrade = aiResults.find(r => r.index === idx);
                     if (aiGrade && aiGrade.isCorrect) isCorrect = true;
                 } else {
-                    // Fallback cơ bản: Chứa từ khóa chính
                     if (userVal && item.ans && userVal.toLowerCase().includes(item.ans.toLowerCase())) isCorrect = true;
                 }
 
@@ -627,24 +640,54 @@
 
             const score = Math.round((p1 + p2 + p3 + p4) * 100) / 100;
             
-            // Thông tin tổng điểm
+            // --- CẬP NHẬT: LẤY NHẬN XÉT TỪ AI VÀ ĐỢI ĐỂ LƯU ---
+            let aiComment = "";
+            document.getElementById("aiCommentBox").classList.add("hidden-section");
+            document.getElementById("loading-text").innerText = "Đang xin ý kiến AI...";
+            
+            try {
+                // Sử dụng await để đợi phản hồi từ AI
+                const commentResponse = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        action: "get_comment",
+                        score: score,
+                        maxScore: 10,
+                        p1: p1, p2: p2, p3: p3, p4: p4
+                    })
+                });
+                const commentData = await commentResponse.json();
+                aiComment = commentData.comment || "";
+                
+                // Hiển thị ngay sau khi có
+                document.getElementById("aiCommentText").innerText = aiComment;
+                document.getElementById("aiCommentBox").classList.remove("hidden-section");
+            } catch (e) {
+                console.log("Lỗi lấy comment:", e);
+                aiComment = "Không thể lấy nhận xét.";
+            }
+
+
+            // Payload lưu kết quả
             const examName = examData.name;
             const summaryScores = [`${score}/10`, `${p1}/3.0`, `${p2}/4.0`, `${p3}/0.0`, `${p4}/3.0`];
             const summaryHeaders = ["Tổng Điểm", "Điểm TN", "Điểm ĐS", "Điểm Điền", "Điểm Ngắn"];
 
-            // Payload gửi đi để LƯU KẾT QUẢ
             const payload = {
                 action: "save_score", 
-                role: examName, // Lưu tên đề thi vào cột Role/Chức vụ
+                role: examName, 
                 evaluator: studentName,
                 groupName: groupName,
                 week: "ON_TAP_HK1",
                 headers: summaryHeaders.concat(headersLog), 
-                scores: summaryScores.concat(answerLog)     
+                scores: summaryScores.concat(answerLog),
+                comment: aiComment // --- CẬP NHẬT: GỬI KÈM COMMENT ---
             };
 
             try {
                 document.getElementById("loading-text").innerText = "Đang lưu kết quả...";
+                
                 await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -652,7 +695,6 @@
                     body: JSON.stringify(payload)
                 });
 
-                // Hiển thị kết quả
                 document.getElementById("loading").style.display = "none";
                 document.getElementById("resName").innerText = studentName + " - " + groupName;
                 document.getElementById("resTotal").innerText = score + " / 10";
@@ -662,7 +704,6 @@
                 document.getElementById("resP3").innerText = examData.fill && examData.fill.length > 0 ? `${p3}` : "0 (Không có)";
                 document.getElementById("resP4").innerText = `${Math.round(p4*100)/100}/3.0`;
 
-                // Ẩn hiện box điểm điền khuyết
                 if (!examData.fill || examData.fill.length === 0) {
                      document.getElementById("resP3Box").classList.add("hidden-section");
                 } else {
@@ -686,7 +727,6 @@
             document.getElementById("resultModal").classList.remove("flex");
         }
 
-        // Init
         window.onload = function() {
             renderExam();
         }
