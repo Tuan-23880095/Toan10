@@ -38,6 +38,29 @@
         }
         .ai-icon { font-size: 1.2rem; margin-right: 8px; }
     </style>
+    <script>
+      window.MathJax = {
+        tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async src="[https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js](https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js)"></script>
+
+2.  Trong hàm `renderExam()` của `mau.html`, sau khi `innerHTML` xong nội dung câu hỏi, bạn cần gọi lệnh cập nhật MathJax:
+
+```javascript
+// ... sau khi render xong các câu hỏi vào div
+// Thêm dòng này ở cuối hàm renderExam():
+if (window.MathJax) {
+    MathJax.typesetPromise();
+}
+
+### Tóm lại
+Bạn không cần code phức tạp để đọc file Word/PDF binary. Hãy dùng quy trình:
+1.  **Chụp ảnh** đề thi (Word/PDF).
+2.  Dùng **Tool Admin** (code ở trên) upload ảnh.
+3.  AI (Gemini) sẽ trả về **JSON** có sẵn LaTeX.
+4.  Copy JSON vào web và dùng **MathJax** để hiển thị.
 </head>
 <body>
 
